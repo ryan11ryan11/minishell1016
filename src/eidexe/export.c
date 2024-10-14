@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rakropp <rakropp@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 14:53:13 by rakropp           #+#    #+#             */
-/*   Updated: 2024/08/30 12:24:38 by rakropp          ###   ########.fr       */
+/*   Updated: 2024/10/14 10:40:55 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	fill_export(t_data *data, char **arg, char **str, int start)
 		}
 	}
 	arg[c] = NULL;
+	if (data->pid)//silent DataNotUsed-error
+		c = 1;
 }
 
 void	ms_export(t_data *data, t_node *node)

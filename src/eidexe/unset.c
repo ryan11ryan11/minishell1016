@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rakropp <rakropp@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 14:53:10 by rakropp           #+#    #+#             */
-/*   Updated: 2024/08/30 12:23:17 by rakropp          ###   ########.fr       */
+/*   Updated: 2024/10/14 10:41:15 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	fill_arg(t_data *data, char **arg, char **str, int start)
 	while (str[start])
 		arg[c++] = ms_strdup(str[start++]); // malloc check
 	arg[c] = NULL;
+	if (data->pid)//silent DataNotUsed-error
+		c = 1;
 }
 
 int	ms_arglen(char **arg, int start)

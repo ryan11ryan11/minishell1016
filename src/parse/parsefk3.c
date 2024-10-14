@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 12:36:57 by jbober            #+#    #+#             */
-/*   Updated: 2024/08/30 12:57:46 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/14 10:42:45 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ char	*ms_parsefk3_ctrl(t_data *data)
 		k++;
 	}
 	data->currstr[k] = NULL;
+	return (data->currinput);
 }
 
 /**

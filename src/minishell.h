@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 15:30:25 by jbober            #+#    #+#             */
-/*   Updated: 2024/08/30 12:35:47 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/14 10:37:00 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,16 @@ int		ms_cinset(char c, char *set, int modus);
 
 void	set_pwd(t_data *data, char *dir);
 void	ms_cd(t_data *data, t_node *node);
+
+// check_cmds
+
+void	check_cmds(t_data *data);
+void	check_cd(t_data *data, t_node *node);
+void	check_echo(t_data *data, t_node *node);
+void	check_pwd(t_data *data, t_node *node);
+void	check_export(t_data *data, t_node *node);
+void	check_unset(t_data *data, t_node *node);
+void	check_env(t_data *data, t_node *node);
 
 // control
 

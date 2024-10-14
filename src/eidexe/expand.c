@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 15:21:17 by jbober            #+#    #+#             */
-/*   Updated: 2024/08/21 14:46:17 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/14 10:39:28 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*expand_last_exit(t_data *data, char *rest)
 	char	*tmp;
 	char	*ret;
 
-	tmp = ms_itoa(data, g_lastexit);
+	tmp = ms_itoa(g_lastexit);
 	if (!tmp)
 		ms_error(data, "eidexe/expand.c 22: failloc :(", ENOMEM);
 	ret = ms_strjoin(rest, tmp);

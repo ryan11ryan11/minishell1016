@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   control.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rakropp <rakropp@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:31:45 by rakropp           #+#    #+#             */
-/*   Updated: 2024/08/30 12:32:55 by rakropp          ###   ########.fr       */
+/*   Updated: 2024/10/14 10:47:34 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ void	find_cmd(t_data *data, t_node *node)
 		ms_env(data, node);
 	else if ((ms_strncmp(node->cmd[0], "./", 2)) == 0)
 		ms_executable(data, node);
-	else
-		do_command(data, node);
+	// else
+	// 	do_command(data, node);
 	dup2(data->exe->std_fd[0], 0);
 	dup2(data->exe->std_fd[1], 1);
 }
@@ -180,7 +180,7 @@ void	exe_control(t_data *data)
 	if (!data->lstart)
 		return ;
 	get_pipes(data);
-	check_cmds(data);
+	//check_cmds(data);
 	data->currmds = data->lstart;
 	if (pipe(data->exe->tube))
 		ms_error(data, "eidexe/control.c 126", EPIPE);

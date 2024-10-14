@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:04:40 by jbober            #+#    #+#             */
-/*   Updated: 2024/08/30 12:31:34 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/14 10:37:38 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static int	ms_countseps(char *str)
 			weakqt++;
 		if ((str[i] == 39) && !(weakqt % 2))
 			strongqt++;
-		if ((ms_checksep(str, i)) && !(weakqt % 2) && !(strongqt % 2))
+		if ((ms_checkseps(str, i)) && !(weakqt % 2) && !(strongqt % 2))
 			j++;
 		i++;
 	}

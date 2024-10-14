@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:04:43 by jbober            #+#    #+#             */
-/*   Updated: 2024/08/29 15:40:53 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/14 10:42:02 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,15 @@ static char	*ms_ex_strjoin(char *str1ng, char *str2ng, int l, int lenterm)
 	if (!newstr)
 		return (NULL);
 	while (i < l)
-		newstr[i] = str1ng[i++];
+	{
+		newstr[i] = str1ng[i];
+		i++;
+	}
 	while ((i + j) < (l + ms_strlen(str2ng)))
-		newstr[i + j] = str2ng[j++];
+	{
+		newstr[i + j] = str2ng[j];
+		j++;
+	}
 	while ((l + lenterm) < (ms_strlen(str1ng)))
 	{
 		newstr[l + ms_strlen(str2ng)] = str1ng[l + lenterm];

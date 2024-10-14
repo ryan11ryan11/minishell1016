@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rakropp <rakropp@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 14:53:17 by rakropp           #+#    #+#             */
-/*   Updated: 2024/08/30 12:22:36 by rakropp          ###   ########.fr       */
+/*   Updated: 2024/10/14 10:39:10 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ char	**add_env(t_data *data, char **str) // needs to overwrite existing values
 	i = 0;
 	while (data->env[c])
 	{
-		ret[c] = ms_strdup(data, data->env[c]);
+		ret[c] = ms_strdup(data->env[c]);
 		c++;
 	}
 	while (str[i])
@@ -141,7 +141,7 @@ char	**add_env(t_data *data, char **str) // needs to overwrite existing values
 		if (str[i][0] == ' ')
 			i++;
 		else
-			ret[c++] = ms_strdup(data, str[i++]);
+			ret[c++] = ms_strdup(str[i++]);
 	}
 	ret[c] = NULL;
 	env_free(data->env);
@@ -161,7 +161,7 @@ void	ms_cpy_env(t_data *data, char **arg)
 	c = 0;
 	while (arg[c])
 	{
-		data->env[c] = ms_strdup(data, arg[c]);
+		data->env[c] = ms_strdup(arg[c]);
 		c++;
 	}
 	data->env[c] = NULL;

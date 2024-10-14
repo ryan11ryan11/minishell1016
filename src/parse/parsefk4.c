@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:24:55 by jbober            #+#    #+#             */
-/*   Updated: 2024/08/30 18:37:14 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/14 10:49:00 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ static char	*ms_fillnodext(t_data *data, t_node *content, int i, int k)
 		i++;
 	}
 	content->cmd[i] = NULL;
+	return ("Success");
 }
 
 /**

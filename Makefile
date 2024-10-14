@@ -6,7 +6,7 @@
 #    By: jbober <jbober@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/17 15:25:56 by jbober            #+#    #+#              #
-#    Updated: 2024/08/29 17:05:13 by jbober           ###   ########.fr        #
+#    Updated: 2024/10/14 10:48:39 by jbober           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ FILES = eidexe/cd\
 		parse/parsefk1b\
 		parse/parsefk2\
 		parse/parsefk3\
+		parse/parsefk4\
 		freerror\
 		minishell\
 		signals\

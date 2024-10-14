@@ -1,0 +1,40 @@
+Terminal als HumanInput -> Shell aka Übersetzer -> Kernel macht Dinge
+
+
+1) 🗸	Erlaubte Funktionen verstehen
+2) Github
+3) Abstract syntax tree
+4)
+
+- Prompt
+- History
+- Search/Launch bla -> toi
+- Mysteriöse Warnung @ Global Var
+- Handle ->moi
+	- KEIN \;
+	- '		apostroph
+	- "		gaensefuesschen
+	- <		infile
+	- <<	heredoc
+	- >		outfile
+	- >>	outfileadd
+	- $		expand
+	  - $?	exitstatus
+	- |		inout
+	(- ||
+	- &&)
+	- ctrl+CD\ --> moi
+	- -n als arg für echo
+- Commands
+	- 0	echo	- Leere, str, "str", 'str', $*, "$*"(?)
+	- 1	cd		- Leere, PATHrealtiv, PATHabsolutpwd --
+	- 2	pwd		- Leere (avoid all symlinks!)
+	- 3	export	- Leere (list all exported vars), x*: VAR_NAME="value", VAR_NAME='value', VAR_NAME=value, $*
+	- 4	unset	- x*VAR_NAME; !achtung unset cd :(
+	- 5	env		- Leere, VAR_NAME="value" command
+	- 6	exit	- Leere
+
+4) Be Happy || Have Fun
+
+¹) Conventional Commits: https://www.conventionalcommits.org/en/v1.0.0/
+²) Shell Tutorial: https://www.geeksforgeeks.org/making-linux-shell-c/

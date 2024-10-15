@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 17:03:10 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/14 18:34:25 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 13:55:40 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void	ms_error(t_data *data, char *str, int brexit)
 	exit(brexit);
 }
 
-/**
- * Frees everything that is bound in shackles, longing for the taste of freedom!
- * modus 1 == clear_history (only at exit)
-*/
+// /**
+//  * Frees everything that is bound in shackles, longing for the taste of freedom!
+//  * modus 1 == clear_history (only at exit)
+// */
 // void	ms_free(t_data *data, int modus)
 // {
 // 	int	k;
@@ -88,17 +88,8 @@ void	ms_error(t_data *data, char *str, int brexit)
 // 	t_list *tmp;
 
 // 	k = 0;
-// 	while (iamhere->content->cmd[k])
-// 	{
-// 		free(iamhere->content->cmd[k]);
-// 		iamhere->content->cmd[k++] = NULL;
-// 	}
-// 	free(iamhere->content->cmd);
-// 	iamhere->content->cmd = NULL;
-// 	free(iamhere->content->path);
-// 	iamhere->content->path = NULL;
-// 	if (iamhere->content->infd > 0)
-// 		close(iamhere->content->infd);
+// 	while (iamhere->cont)
+// CONFLICT (content): Merge conflict in Makefilecontent->infd);
 // 	if (iamhere->content->outfd > 1)
 // 		close(iamhere->content->outfd);
 // 	free(iamhere->content);

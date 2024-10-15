@@ -1,21 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsefk3.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/30 12:36:57 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/14 10:42:45 by jbober           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../minishell.h"
 
 char		*ms_parsefk3_ctrl(t_data *data);
-static int	ms_countword(char *str, int numwords, int modus);
-static char	*ms_add_item(t_data *data, char *str, int k);
-static char	*ms_trimdup(char *str, int i);
+static int	ms_getnumwords(char *str);
+static int	ms_fillcurrstr(t_data *data, int numwords);
+static int	ms_additem(t_data *data, int k, int start);
+static int	ms_partlen(t_data *data, int start);
 
 /**
  * Control structure
@@ -23,35 +12,29 @@ static char	*ms_trimdup(char *str, int i);
  */
 char	*ms_parsefk3_ctrl(t_data *data)
 {
-	int	k;
 	int	numwords;
 
-	k = 0;
-	numwords = ms_countword(data->currinput, 1, 0);
+	numwords = ms_getnumwords(data->currinput);
 	data->currstr = malloc((numwords + 1) * sizeof(char *));
 	if (!data->currstr)
 		return (NULL);
-	while (k < numwords)
-	{
-		if (!ms_add_item(data, data->currinput, k))
-			return (NULL);
-		k++;
-	}
-	data->currstr[k] = NULL;
-	return (data->currinput);
+	if (!ms_fillcurrstr(data, numwords))
+		return (NULL);
+	return ("Success");
 }
 
 /**
- * Modus 0: Counts the # of words in data->currstr
- * Modus 1: Returns the index of the first 32
+ * Returns the number of words (strings seperated by 32)
  */
-static int	ms_countword(char *str, int numwords, int modus)
+static int	ms_getnumwords(char *str)
 {
 	int	i;
+	int	numwords;
 	int	weakqt;
 	int	strongqt;
 
 	i = 0;
+	numwords = 1;
 	weakqt = 0;
 	strongqt = 42;
 	while (str[i])
@@ -61,65 +44,83 @@ static int	ms_countword(char *str, int numwords, int modus)
 		if ((str[i] == 39) && (weakqt % 2 == 0))
 			strongqt++;
 		if ((str[i] == 32) && (weakqt % 2 == 0) && (strongqt % 2 == 0))
-		{
 			numwords++;
-			if (modus == 1)
-				return (i);
-		}
 		i++;
 	}
-	if (modus == 1)
-		return (0);
 	return (numwords);
 }
 
 /**
- * Mallocs and fills the kth word
- * Trims data->*currinput by the filled amount
+ * Fills the array data->**currstr with content from data->*currinput
+ * Returns 0 on malloc fail
  */
-static char	*ms_add_item(t_data *data, char *str, int k)
+static int	ms_fillcurrstr(t_data *data, int numwords)
 {
 	int	i;
-	int	len;
+	int	k;
 
 	i = 0;
-	len = ms_countword(str, 1, 1);
-	data->currstr[k] = malloc((len + 1) * sizeof(char));
-	if (!data->currstr[k])
-		return (NULL);
-	while (i < len)
+	k = 0;
+	data->currstr[numwords] = NULL;
+	while (k < numwords)
 	{
-		data->currstr[k][i] = str[i];
-		i++;
+		i = ms_additem(data, k, i);
+		if (!i)
+			return (0);
+		k++;
 	}
-	data->currstr[k][i] = '\0';
-	str = ms_trimdup(str, len);
-	return (str);
+	return (1);
 }
 
 /**
- * Returns malloced cpy of str, excluding the first n chars + leading 32
- * Frees the provided str
+ * Adds the 32-delimited-str in data->*currinput to data->*currstr[k]
+ * Returns 0 on malloc fail
+ * start == first letter of str in *currinput
  */
-static char	*ms_trimdup(char *str, int i)
+static int	ms_additem(t_data *data, int k, int start)
 {
-	int		j;
-	char	*newstr;
+	int	i;
+	int	j;
+	int	len;
 
-	j = 0;
-	while (str[i] == 32)
-		i++;
-	if (!str[i])
-		return (NULL);
-	newstr = malloc((ms_strlen(str) - i + 1) * sizeof(char));
-	if (!newstr)
-		return (NULL);
-	while (str[i + j])
+	len = (ms_partlen(data, start) - start);
+	i = 0;
+	j = start;
+	data->currstr[k] = malloc((len + 1) * sizeof(char));
+	if (!data->currstr[k])
+		return (0);
+	data->currstr[k][len] = '\0';
+	while (i < len)
 	{
-		newstr[j] = str[i + j];
+		data->currstr[k][i] = data->currinput[j];
+		i++;
 		j++;
 	}
-	newstr[j] = '\0';
-	free(str);
-	return (newstr);
+	return (len + start + 1);
+}
+
+/**
+ * Returns the index of the next 32/'\0' in data->*currinput
+ * start == first letter of str in *currinput
+ */
+static int	ms_partlen(t_data *data, int start)
+{
+	int	i;
+	int	weakqt;
+	int	strongqt;
+
+	i = start;
+	weakqt = 0;
+	strongqt = 42;
+	while (data->currinput[i])
+	{
+		if ((data->currinput[i] == 34) && (strongqt % 2 == 0))
+			weakqt++;
+		if ((data->currinput[i] == 39) && (weakqt % 2 == 0))
+			strongqt++;
+		if ((data->currinput[i] == 32) && (weakqt % 2 == 0) && (strongqt % 2 == 0))
+			return (i);
+		i++;
+	}
+	return (i);
 }

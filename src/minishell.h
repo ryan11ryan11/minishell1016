@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 15:30:25 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/15 09:50:39 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 14:44:49 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ typedef struct s_data
 	char	**cstrl;
 	t_list	*lstart;
 	t_exe	*exe;
-
 	t_list	*currmds;
 	char	*currinput;
 	int		num_envp;
@@ -68,6 +67,7 @@ typedef struct s_exe
 	char	**paths;
 	int		std_fd[2];
 	int		endline;
+	int		test;
 }	t_exe;
 
 typedef struct s_list
@@ -82,6 +82,7 @@ typedef struct s_node
 	char	*path;
 	char	*infd;
 	char	*outfd;
+	int		status;
 	int		oper;
 	int		appnd;
 }	t_node;
@@ -97,12 +98,17 @@ typedef struct s_envlist
 	--- asd ---
 */
 
+// envp
+
+void	ms_cpy_env(t_data *data, char **arg);
+void	ms_envp(t_data *data, char **envp);
+
 // freerror
 
 void	ms_error(t_data *data, char *str, int brexit);
 //void	ms_free(t_data *data, int modus);
-//void	ms_freevenmore(t_data *data);
-//void	ms_freelst(t_list *iamhere);
+// void	ms_freevenmore(t_data *data);
+// void	ms_freelst(t_list *iamhere);
 
 // minishell
 
@@ -368,7 +374,7 @@ void	case_outfile(t_node *argvt);
 char	*get_last_word(char *buffer, int index);
 void	case_heredoc(t_data *data);
 int		case_infile(t_data *data);
-void	child_process(t_data *data, int i, char *line);
+void	child_process(t_data *data, int i);
 void	parent_process(t_data *data);
 int		exec_command_errcheck(t_data *data);
 int		parent_process_exec(t_data *data);
@@ -403,5 +409,9 @@ char	*ft_strncpy(char *dest, const char *src, size_t len);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 void	*ft_memset(void *s, int c, size_t n);
 size_t	ft_strlcat(char *dest, const char *src, size_t size);
+
+//utils
+char	*without_data(char *str);
+void	print_current_path();
 
 #endif

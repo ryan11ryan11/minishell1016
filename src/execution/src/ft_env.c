@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 13:46:30 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/14 18:44:50 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:42:44 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_env(t_data *data)
 	t_envlist	*tmp;
 
 	tmp = data->envlist;
-	if (data->currmds->content->cmd[1])
+	if (data->lstart->content->cmd[1])
 	{
 		ft_putstr_fd("env: No such file or directory\n", 2);
 		return (127);

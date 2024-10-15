@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 18:47:52 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/14 19:04:27 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 10:51:53 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,3 +84,4 @@ size_t	ft_strlcat(char *dest, const char *src, size_t size)
 	dest[dest_size + i] = '\0';
 	return (dest_size + src_size);
 }
+

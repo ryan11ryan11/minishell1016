@@ -6,11 +6,30 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:47:33 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/14 18:36:03 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 14:45:09 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+volatile sig_atomic_t	g_child;
+int	g_lastexit;
+
+void	ms_test(t_data *data, t_list *iamhere)
+{
+	int	i;
+	
+	i = 0;
+	while (iamhere->content->cmd[i])
+	{
+		printf("cmd[%i] == %s\n", i, iamhere->content->cmd[i]);
+		i++;
+	}
+	printf("infd == %s\noutfd == %s\nstatus == %i\noper == %i\n", iamhere->content->infd, iamhere->content->outfd, iamhere->content->status, iamhere->content->oper);
+	if (iamhere->next)
+		ms_test(data, iamhere->next);
+}
+
+//-----------------------------------------------------
 
 /**
  * Initializes values to zero
@@ -18,16 +37,18 @@
 void	ms_initialize(t_data *data, char **envp)
 {
 	(void) envp;
+	data->exe = (t_exe *)malloc(sizeof(t_exe));
 	data->currinput = NULL;
 	data->currstr = NULL;
 	ms_ctrlitialize(data);
 	g_lastexit = 0;
-	data->exe->std_fd[0] = dup(0);
-	data->exe->std_fd[1] = dup(1);
+	//data->exe->std_fd[0] = dup(0);
+	//data->exe->std_fd[1] = dup(1);
 	data->env = NULL;
-	//ms_envp(data, envp);
+	ms_envp(data, envp);
 	data->exe->endline = 0;
 	data->env_set = 0;
+	data->new_envp = NULL;
 }
 
 /**
@@ -39,6 +60,7 @@ void	ms_prompt(t_data *data)
 
 	thisdir = getcwd(NULL, 0);
 	thisdir = ms_speciasplit(data, thisdir);
+	
 	if (data->exe->endline == 0)
 	{
 		printf("\n~/..%s", thisdir);
@@ -91,7 +113,6 @@ int	ms_read_input(t_data *data)
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
-
 	ms_initialize(&data, envp);
 	(void)argc;
 	(void)argv;
@@ -106,9 +127,8 @@ int	main(int argc, char **argv, char **envp)
 		if (data.env_set == 0)
 			envlistmaker(&data, envp);
 		envp_maker(&data);
-		data.exe->endline = 0;
-		ms_parse_ctrl(&data);
-		data_setting(&data);
+		ms_parse_ctrl(&data); // here print
+		data_setting(&data); // problem
 		exec_command(&data);
 		//exe_control(&data);
 		//ms_free(&data, 0);

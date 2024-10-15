@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 11:57:20 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/14 18:37:08 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:42:30 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	builtin_exception(t_data *data)
 {
 	char	**argv;
 
-	argv = data->currmds->content->cmd;
+	argv = data->lstart->content->cmd;
 	if (ft_strlcmp_limited(argv[0], "echo") == 0)
 		return (1);
 	if (ft_strlcmp_limited(argv[0], "cd") == 0)
@@ -70,8 +70,8 @@ int	builtin(t_data *data)
 	t_node	*argvt;
 
 	line = data->currinput;
-	argv = data->currmds->content->cmd;
-	argvt = data->currmds->content;
+	argv = data->lstart->content->cmd;
+	argvt = data->lstart->content;
 	if (ft_strlcmp_limited(argv[0], "echo") == 0)
 		return (ft_echo(data));
 	if (ft_strlcmp_limited(argv[0], "cd") == 0)
@@ -92,7 +92,7 @@ int	count_arg(t_data *data)
 	int	i;
 
 	i = 0;
-	while (data->currmds->content->cmd[i] != NULL)
+	while (data->lstart->content->cmd[i] != NULL)
 		i++;
 	return (i);
 }

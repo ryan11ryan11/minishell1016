@@ -6,7 +6,7 @@
 #    By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/17 15:25:56 by jbober            #+#    #+#              #
-#    Updated: 2024/10/14 18:48:32 by junhhong         ###   ########.fr        #
+#    Updated: 2024/10/15 13:29:59 by junhhong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ FILES = parse/parse\
 		parse/parsefk2\
 		parse/parsefk3\
 		parse/parsefk4\
+		envp\
 		freerror\
 		minishell\
 		signals\

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsefk4.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:24:55 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/14 10:49:00 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/15 12:10:21 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char		*ms_parsefk4_ctrl(t_data *data);
 static char	*ms_fillnode(t_data *data, t_node *content, int i, int k);
+static int	ms_addsize(t_data *data, int first, int superlast);
 static char	*ms_fillnodext(t_data *data, t_node *content, int i, int k);
-static char	*ms_cp_to_lst(t_data *data, t_node *content, int k, int c);
 
 /**
  * Control structure
@@ -33,7 +33,8 @@ char	*ms_parsefk4_ctrl(t_data *data)
 	data->lstart = data->currmds;
 	while (data->currstr[k])
 	{
-		if (data->currstr[k][0] == 124)
+		if ((data->currstr[k][0] == 124)
+			|| (data->currstr[k][0] == 60 && data->currstr[k][1] == 60))
 		{
 			if (!ms_fillnode(data, data->currmds->content, i, k))
 				return (NULL);
@@ -51,23 +52,53 @@ char	*ms_parsefk4_ctrl(t_data *data)
 }
 
 /**
- * Fills node with adequate information
+ * Fills node with adequate information from data->**currstr
+ * first == first array for node
+ * superlast == one after last array for node
  */
-static char	*ms_fillnode(t_data *data, t_node *content, int i, int k)
+static char	*ms_fillnode(t_data *data, t_node *content, int first, int superlast)
 {
-	content->cmd = malloc(((k - i) + 1) * sizeof(char *));
+	int	size;
+
+	size = ms_addsize(data, first, superlast);
+	content->cmd = malloc(size * sizeof(char *));
 	if (!content->cmd)
-		ms_error(data, "parse/parsefk3.c 97: failloc :(", ENOMEM);
-	content->path = NULL;
-	content->infd = 0;
-	content->outfd = 1;
-	if (!ms_fillnodext(data, content, i, k))
+		return (NULL);
+	content->infd = NULL;
+	content->outfd = NULL;
+	content->status = 0;
+	content->oper = 0;
+	if (data->currstr[superlast] && data->currstr[superlast][0] == 60)//new
+		content->oper = 1;
+	if (data->currstr[superlast] && data->currstr[superlast][0] == 124)//new
+		content->oper = 6;
+	if (!ms_fillnodext(data, content, first, superlast))
 		return (NULL);
 	return ("Success");
 }
 
 /**
- * More than 25 lines
+ * Returns superlast - first + 1, +1 for each << in node, +2 for each <, >, >>
+ */
+static int	ms_addsize(t_data *data, int first, int superlast)
+{
+	int	size;
+
+	size = superlast - first + 1;
+	while (first < superlast)
+	{
+		if ((data->currstr[first][0] == 60) || (data->currstr[first][0] == 62))
+			size -= 2;
+		first++;
+	}
+	return (size);
+}
+
+/**
+ * More than 25 lines:
+ * Fills node with adequate information from data->**currstr
+ * i == first array for node/ aktuell
+ * k == one after last array for node
  */
 static char	*ms_fillnodext(t_data *data, t_node *content, int i, int k)
 {
@@ -76,49 +107,32 @@ static char	*ms_fillnodext(t_data *data, t_node *content, int i, int k)
 	c = 0;
 	while (i < k)
 	{
-		if ((data->currstr[i][0]) == 60 && (data->currstr[i][1] != 60))
+		if (data->currstr[i][0] == 60)
 		{
-			content->infd = open(data->currstr[i + 1], O_RDONLY);
-			if (content->infd < 0)
-				ms_error(data, "parse/parsefk3.c 119", ENOENT);
-		}
-		if (data->currstr[i][0] == 62)
-		{
-			content->outfd = open(data->currstr[i + 1], O_RDWR | O_CREAT, 0777);
-			if (content->outfd < 0)
-				ms_error(data, "parse/parsefk3.c 125", ENOENT);
-		}
-		if ((data->currstr[i][0] == 60 && data->currstr[i][1] == 60)
-			|| (data->currstr[i][0] == 62))
-			i++;
-		else
-		{
-			if (!ms_cp_to_lst(data, content, i, c))
+			content->infd = ms_strdup(data->currstr[i + 1]);
+			if (!content->infd)
 				return (NULL);
+			i += 2;
+		}
+		if ((data->currstr[i]) && (data->currstr[i][0] == 62))
+		{
+			content->outfd = ms_strdup(data->currstr[i + 1]);
+			if (!content->outfd)
+				return (NULL);
+			if (data->currstr[i][1] == 62)
+				content->status = 1;
+			i += 2;
+		}
+		if ((data->currstr[i])
+			&& (data->currstr[i][0] != 60) && (data->currstr[i][0] != 62))
+		{
+			content->cmd[c] = ms_strdup(data->currstr[i]);
+			if (!content->cmd[c])
+				return (NULL);
+			i++;
 			c++;
 		}
-		i++;
 	}
 	content->cmd[i] = NULL;
-	return ("Success");
-}
-
-/**
- * Copies content of **currstr[k] to node
- */
-static char	*ms_cp_to_lst(t_data *data, t_node *content, int k, int c)
-{
-	int	i;
-
-	i = 0;
-	content->cmd[c] = malloc((ms_strlen(data->currstr[k] + 1) * sizeof(char)));
-	if (!content->cmd[c])
-		return (NULL);
-	while (data->currstr[k][i])
-	{
-		content->cmd[c][i] = data->currstr[k][i];
-		i++;
-	}
-	content->cmd[c][i] = '\0';
 	return ("Success");
 }

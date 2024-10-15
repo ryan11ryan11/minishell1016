@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 18:31:08 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/14 18:16:01 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 12:08:23 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	count_pipe(t_data *data)
 	int		num_pipe;
 	t_list	*tmp;
 
-	tmp = data->currmds;
+	tmp = data->lstart;
 	num_pipe = 0;
 	while (tmp)
 	{

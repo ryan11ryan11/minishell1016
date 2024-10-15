@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:39:42 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/14 18:51:46 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 12:03:29 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*absolute_path(t_data *data)
 {
 	t_node	*argvt;
 	
-	argvt = data->currmds->content;
+	argvt = data->lstart->content;
 	if (access(argvt->cmd[0], X_OK) == 0)
 		return ((char *)argvt->cmd[0]);
 	return (NULL);
@@ -67,12 +67,12 @@ char	*pathfinder(char *command, t_data *data)
 	return (NULL);
 }
 
-void	count_currmds(t_data *data)
+void	count_lstart(t_data *data)
 {
 	int	i;
 	t_list	*tmp;
 
-	tmp = data->currmds;
+	tmp = data->lstart;
 	i = 0;
 	while (tmp)
 	{
@@ -128,8 +128,8 @@ void	data_setting(t_data *data)
 		data->patharr = ft_split(fullpath, ':');
 		free(fullpath);
 	}
-	data->num_pipe = count_pipe(data);
-	count_currmds(data);
+	data->num_pipe = count_pipe(data); // problem
+	count_lstart(data);
 	data->pid = assign_pid(data->num_ndata);
 	data->pipe = assign_pipe(data->num_pipe);
 	init_pipe(data);

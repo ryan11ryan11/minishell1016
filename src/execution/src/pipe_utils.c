@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:35:18 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/14 18:49:24 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 14:27:45 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	envp_maker(t_data *data)
 	t_envlist	*tmp;
 
 	i = 0;
-	if (envp_setting(data) == -1)
+	if (envp_setting(data) == -1) // problem
 		return ;
 	if (data->env != NULL)
 		tmp = data->envlist;

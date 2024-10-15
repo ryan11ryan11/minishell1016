@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 18:38:58 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/14 18:45:16 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:06:04 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,59 @@ char	*ft_strdup(const char *src)
 	}
 	tmp[size] = '\0';
 	return (tmp);
+}
+
+static char	**free_matrix(char **end, char **start)
+{
+	while (end >= start)
+		free(*end--);
+	free(start);
+	return (NULL);
+}
+
+static char	**create_str_m(char **arr, char const *s, char c)
+{
+	size_t	size;
+	char	**arr_tmp;
+
+	arr_tmp = arr;
+	size = 0;
+	while (*s != '\0')
+	{
+		if (*s != c)
+			++size;
+		if (*s != c && (*(s + 1) == c || *(s + 1) == '\0'))
+		{
+			*arr_tmp = malloc((size + 1) * sizeof(char));
+			if (*arr_tmp == NULL)
+				return (free_matrix(arr_tmp, arr));
+			++arr_tmp;
+			size = 0;
+		}
+		++s;
+	}
+	return (arr);
+}
+
+static char	**create_matrix(char const *s, char c)
+{
+	size_t		size;
+	char const	*str;
+	char		**tmp;
+
+	size = 0;
+	str = s;
+	while (*str != '\0')
+	{
+		if (*str != c && (*(str + 1) == c || *(str + 1) == '\0'))
+			++size;
+		++str;
+	}
+	tmp = malloc((size + 1) * sizeof(char *));
+	if (!tmp)
+		return (NULL);
+	tmp[size] = NULL;
+	return (create_str_m(tmp, s, c));
 }
 
 char	**ft_split(char const *s, char c)

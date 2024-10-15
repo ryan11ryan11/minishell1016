@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:41:00 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/14 19:03:02 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 12:22:19 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	case_heredoc(t_data *data)
 	int		fd[2];
 	pid_t	pid;
 
-	if (!data->currmds->next)
+	if (!data->lstart->next)
 	{
 		ft_putstr_fd("syntax error\n", 2);
 		exit (2);
@@ -71,7 +71,7 @@ void	case_heredoc(t_data *data)
 	pid = fork();
 	if (pid == 0)
 	{
-		delimiter = (char *)(data->currmds->next->content->cmd[0]);
+		delimiter = (char *)(data->lstart->next->content->cmd[0]);
 		total_byte = 0;
 		while(1)
 		{	
@@ -103,7 +103,7 @@ int	case_infile(t_data *data)
 	int		fd;
 	t_node	*argvt;
 
-	argvt = data->currmds->content;
+	argvt = data->lstart->content;
 	if (argvt->appnd == 0)
 	{
 		fd = open(argvt->infd, O_RDONLY);
@@ -132,7 +132,7 @@ t_list	*prv_list_finder(t_list *list)
 	return (NULL);
 }
 
-void	child_process(t_data *data, int i, char *line)
+void	child_process(t_data *data, int i)
 {
 	char	*command;
 	char	*path;
@@ -140,10 +140,10 @@ void	child_process(t_data *data, int i, char *line)
 	//t_node	*argvt;
 	t_list	*list;
 
-	list = data->currmds;
+	list = data->lstart;
 	command = NULL;
 	prv_list = NULL;
-	//argvt = data->currmds->content;
+	//argvt = data->lstart->content;
 	if (prv_list_finder(list))
 		prv_list = prv_list_finder(list);
 	if (prv_list->content->oper == 1)
@@ -162,7 +162,7 @@ void	child_process(t_data *data, int i, char *line)
 		command = list->content->cmd[0];
 	else
 		perror("error");
-	builtin_situation(data, line);
+	builtin_situation(data);
 	path = pathfinder(command, data);
 	if (!path)
 		error_exit(command, 1);
@@ -204,7 +204,7 @@ int	exec_command_errcheck(t_data *data)
 {
 	t_node	*argvt;
 
-	argvt = data->currmds->content;
+	argvt = data->lstart->content;
 	if (ft_get_env(data) == NULL &&
 	ft_strlcmp_limited(argvt->cmd[0], "export") != 0)
 	{
@@ -225,7 +225,7 @@ int	parent_process_exec(t_data *data)
 {
 	char **argv;
 
-	argv = data->currmds->content->cmd;
+	argv = data->lstart->content->cmd;
 	if (ft_strlcmp_limited(argv[0], "export") == 0)
 		return(ft_export(data, data->currinput));
 	if (ft_strlcmp_limited(argv[0], "unset") == 0)
@@ -241,20 +241,20 @@ int	parent_process_exec(t_data *data)
 	return (1);
 }
 
-int		is_pipe(t_list *currmds, t_data *data)
+int		is_pipe(t_list *lstart, t_data *data)
 {
 	t_node *argvt;
 
-	while(currmds)
+	while(lstart)
 	{
-		argvt = data->currmds->content;
+		argvt = data->lstart->content;
 		if (argvt->oper == 6)
 			return (1);
 		if (argvt->infd != NULL)
 			return (1);
 		if (argvt->outfd != NULL)
 			return (1);
-		currmds = currmds->next;
+		lstart = lstart->next;
 	}
 	return (-1);
 }
@@ -264,22 +264,23 @@ void	exec_command(t_data *data)
 	int		i;
 	t_node	*argvt;
 
-	argvt = data->currmds->content;
+	argvt = data->lstart->content;
+
 	if (exec_command_errcheck(data) == -1)
 		return ;
-	if (is_pipe(data->currmds, data) == -1 && builtin_exception(data) == 1)
+	if (is_pipe(data->lstart, data) == -1 && builtin_exception(data) == 1)
 	{
 		data->errcode = parent_process_exec(data);
 		return ;
 	}
 	i = -1;
-	while (data->currmds)
+	while (data->lstart)
 	{
 		i ++;
 		data->pid[i] = fork();
 		if (data->pid[i] == 0)
-			child_process(data, i, data->currinput);
-		data->currmds = data->currmds->next;
+			child_process(data, i);
+		data->lstart = data->lstart->next;
 	}
 	parent_process(data);
 }

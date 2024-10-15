@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:01:32 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/14 18:43:54 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:42:41 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,14 +165,14 @@ int	ft_echo(t_data *data)
 	option = 0;
 	argva = argv_maker(data->currinput);
 	len = ft_strlen(argva[i]);
-	while (data->currmds->content->cmd[i] && all_n(data->currmds->content->cmd[i], len) \
-	== 1 && (ft_strcmp3(data->currmds->content->cmd[i], "-n", 2) == 0))
+	while (data->lstart->content->cmd[i] && all_n(data->lstart->content->cmd[i], len) \
+	== 1 && (ft_strcmp3(data->lstart->content->cmd[i], "-n", 2) == 0))
 	{
 		i ++ ;
 		len = ft_strlen(argva[i]);
 		option = 1;
 	}
-	print_argv(data->currmds->content, i);
+	print_argv(data->lstart->content, i);
 	if (option == 0)
 		write (1, "\n", 1);
 	doublearr_free(&argva);

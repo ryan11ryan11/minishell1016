@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 13:31:40 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/14 19:09:24 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 14:44:32 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	ctrl_c(int signum)
 		ft_putstr_fd("\n", 2);
 		rl_on_new_line();
 		rl_replace_line("", 0);
+		print_current_path();
 		rl_redisplay();
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 18:26:03 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/14 19:04:34 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:43:11 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	all_component_check(t_data *data)
 	char	*command;
 	char	*path;
 
-	tmp = data->currmds;
+	tmp = data->lstart;
 	while (tmp)
 	{
-		argvt = data->currmds->content;
+		argvt = data->lstart->content;
 		if (builtin_exception(data) == 1)
 			return (0);
 		if (argvt->cmd[0])

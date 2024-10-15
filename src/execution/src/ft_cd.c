@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 11:56:01 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/14 18:14:45 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:42:38 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ int	ft_cd(t_data *data)
 	char	*input;
 	int		result;
 
-	input = data->currmds->content->cmd[1];
-	result = no_argument(data->currmds->content);
+	input = data->lstart->content->cmd[1];
+	result = no_argument(data->lstart->content);
 	if (result >= 0)
 		return (result);
-	result = slash_up(data->currmds->content, input);
+	result = slash_up(data->lstart->content, input);
 	if (result >= 0)
 		return (result);
 	new_path = new_path_maker(input);

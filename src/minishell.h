@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 15:30:25 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/14 10:37:00 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/15 09:50:39 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
@@ -22,9 +23,11 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <sys/ioctl.h>
-# include <asm/termbits.h>
+//# include <asm/termbits.h>
+# include <string.h>
 # include <sys/types.h>
 # include <sys/wait.h> 
+# include <dirent.h>
 
 extern int	g_lastexit;
 
@@ -37,14 +40,24 @@ typedef struct s_node	t_node;
 
 typedef struct s_data
 {
-	char	*currinput;
 	char	**currstr;
 	char	**cstrl;
-	t_list	*currmds;
 	t_list	*lstart;
-	pid_t	pid;
-	char	**env;
 	t_exe	*exe;
+
+	t_list	*currmds;
+	char	*currinput;
+	int		num_envp;
+	char	**env;
+	int		errcode;
+	int		env_set;
+	int		num_pipe;
+	char	**patharr;
+	int		num_ndata;
+	int		**pipe;
+	char	**new_envp;
+	struct s_envlist	*envlist;
+	pid_t	*pid;
 }	t_data;
 
 typedef struct s_exe
@@ -67,9 +80,18 @@ typedef struct s_node
 {
 	char	**cmd;
 	char	*path;
-	int		infd;
-	int		outfd;
+	char	*infd;
+	char	*outfd;
+	int		oper;
+	int		appnd;
 }	t_node;
+
+typedef struct s_envlist
+{
+	char				*value;
+	struct s_envlist	*next;
+}	t_envlist;
+
 
 /*
 	--- asd ---
@@ -78,9 +100,9 @@ typedef struct s_node
 // freerror
 
 void	ms_error(t_data *data, char *str, int brexit);
-void	ms_free(t_data *data, int modus);
-void	ms_freevenmore(t_data *data);
-void	ms_freelst(t_list *iamhere);
+//void	ms_free(t_data *data, int modus);
+//void	ms_freevenmore(t_data *data);
+//void	ms_freelst(t_list *iamhere);
 
 // minishell
 
@@ -147,12 +169,12 @@ void	check_env(t_data *data, t_node *node);
 
 // control
 
-void	find_cmd(t_data *data, t_node *node);
-void	sort_in_out(t_data *data, t_node *node);
-void	find_path(t_data *data, t_node *node);
-void	sort_node(t_data *data, t_node *node);
-void	get_pipes(t_data *data);
-void	exe_control(t_data *data);
+// void	find_cmd(t_data *data, t_node *node);
+// void	sort_in_out(t_data *data, t_node *node);
+// void	find_path(t_data *data, t_node *node);
+// void	sort_node(t_data *data, t_node *node);
+// void	get_pipes(t_data *data);
+// void	exe_control(t_data *data);
 
 // echo
 
@@ -229,5 +251,157 @@ extern char	*ms_parsefk3_ctrl(t_data *data);
 // parsefk4
 
 extern char	*ms_parsefk4_ctrl(t_data *data);
+
+
+/*
+	--- NEW ---
+*/
+
+// builtin_control
+int	count_arg(t_data *data);
+int	builtin(t_data *data);
+int	ft_strcmp2(const char *s1, const char *s2);
+int	builtin_exception2(char *arr);
+int	builtin_exception(t_data *data);
+
+//envlistclear
+void	envlistclear(t_envlist *envlist);
+
+//envp_list_maker
+t_envlist	*ft_envlast(t_envlist *lst);
+void	envlist_addback(t_envlist **lst, t_envlist *new);
+t_envlist	*envlist_new(void *content);
+int		env_size_checker(char *env[]);
+int		envlistmaker(t_data *data, char *env[]);
+
+//ft_cd
+int		no_argument(t_node *content);
+int		slash_up(t_node *argvt, char *input);
+int		ft_cd(t_data *data);
+
+//ft_echo
+char	**argv_maker(char *line);
+int		ft_strcmp3(const char *s1, const char *s2, int size);
+int		all_n(char *txt, int len);
+int		filenum_count(void);
+char	**filearr_maker(int file_num);
+char	**filename_arr_maker(DIR *dir);
+int		print_directory();
+int		print_argv(t_node *argvt, int i);
+int		ft_echo(t_data *data);
+
+//ft_env
+int		ft_env(t_data *data);
+
+//ft_export
+char	*remove_quo(char *arr);
+void	fix_arr(char **arr);
+int		add_to_list(char **arr, t_data *data);
+int		ft_export(t_data *data, char *line);
+
+//ft_export2
+int	is_duplicate(char *name, t_envlist *envlist, char *arr, t_data *data);
+char	*quo_add(char *arr);
+void	print_all(t_envlist *envlist);
+int		underbar_alphabet(char *msg, t_data *data);
+int		is_empty(char *msg, t_data *data);
+
+//ft_export3
+int		name_check(char *arr, t_envlist *envlist, t_data *data);
+void	ft_envlist_back(t_envlist **lst, t_envlist *new);
+int		add_newblock(t_envlist **envlist, char *content, t_data *data);
+int		add_truespace(char *line, int *i, int *num_truespace);
+int		newarr_counter(char *line);
+
+//ft_export4
+char	**new_arr_init(char *line);
+char	*make_arr(char *line, int i, int j);
+int		quo_jump(int *i, int *j, char *line);
+void	new_add(int *i, int *j, char *line, char **new_arr);
+char	**new_arr_maker(char *line);
+
+//ft_export5
+int		is_alphabet(char *name, t_data *data);
+int		add_arr(char **arr, char *new);
+
+//ft_pwd
+int		ft_pwd(void);
+
+//ft_unset
+void	delete_node(t_envlist **head, t_envlist *node_to_delete);
+t_envlist	*find_value_envlist(t_envlist *envlist, char *arr);
+int		ft_unset(t_data *data);
+
+//herdoc_signal
+void	heredoc_ctrl_c(int signum);
+void	heredoc_signal(void);
+
+//pipe
+void	init_pipe(t_data *data);
+void	pipe_all_close(t_data *data);
+void	exec_pipe(t_data *data, int i);
+void	free_pipe(t_data *info);
+
+//pipe2
+int		count_pipe(t_data *data);
+int		**assign_pipe(int num_pipe);
+
+//signal
+void	set_terminal_print_on(void);
+void	set_terminal_print_off(void);
+void	ctrl_c(int signum);
+void	ft_signal(void);
+
+//util
+int		ft_strlcmp_limited(const char *s1, const char *s2);
+char	*ft_strcat(char *s1, char *s2);
+
+//pipe_utils4
+int		all_component_check(t_data *data);
+void	all_pipe_close(t_data *data);
+char	*new_path_maker(char *input);
+void	error_exit(char *msg, int error_number);
+void	builtin_situation(t_data *data);
+
+//pipe_utils3
+void	case_outfile(t_node *argvt);
+char	*get_last_word(char *buffer, int index);
+void	case_heredoc(t_data *data);
+int		case_infile(t_data *data);
+void	child_process(t_data *data, int i, char *line);
+void	parent_process(t_data *data);
+int		exec_command_errcheck(t_data *data);
+int		parent_process_exec(t_data *data);
+int		is_pipe(t_list *currmds, t_data *data);
+void	exec_command(t_data *data);
+
+//pipe_utils2
+pid_t	*assign_pid(int num_args);
+char	*absolute_path(t_data *data);
+char	*pathfinder(char *command, t_data *data);
+void	count_currmds(t_data *data);
+void	doublearr_free(char ***arr);
+char	*ft_get_env(t_data *data);
+void	data_setting(t_data *data);
+
+//pipe_utils
+int		count_envplist(t_data *data);
+int		envp_setting(t_data *data);
+void	envp_maker(t_data *data);
+char	*slashadd(char *path);
+char	*commandadd(char *slashadded, char *command);
+
+//ft_lib
+char	*ft_strdup(const char *src);
+char	**ft_split(char const *s, char c);
+void	ft_putstr_fd(const char *s, int fd);
+size_t	ft_strlen(const char *str);
+char	*ft_strchr(const char *s, int ch);
+
+//ft_lib2
+char	*ft_strncpy(char *dest, const char *src, size_t len);
+size_t	ft_strlcpy(char *dest, const char *src, size_t size);
+void	*ft_memset(void *s, int c, size_t n);
+size_t	ft_strlcat(char *dest, const char *src, size_t size);
 
 #endif

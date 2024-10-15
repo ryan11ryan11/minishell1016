@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jbober <jbober@student.42.fr>              +#+  +:+       +#+         #
+#    By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/17 15:25:56 by jbober            #+#    #+#              #
-#    Updated: 2024/10/14 10:48:39 by jbober           ###   ########.fr        #
+#    Updated: 2024/10/14 18:48:32 by junhhong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,19 +20,7 @@ INCLUDE = -lreadline
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 
-FILES = eidexe/cd\
-		eidexe/control\
-		eidexe/echo\
-		eidexe/env\
-		eidexe/envp\
-		eidexe/exe\
-		eidexe/expand\
-		eidexe/export\
-		eidexe/here_doc\
-		eidexe/print\
-		eidexe/pwd\
-		eidexe/unset\
-		parse/parse\
+FILES = parse/parse\
 		parse/parsefk1\
 		parse/parsefk1b\
 		parse/parsefk2\
@@ -45,6 +33,42 @@ FILES = eidexe/cd\
 		ut2ls\
 		ut3ls\
 		ut4ls\
+		execution/src/builtin_control\
+		execution/src/envlistclear\
+		execution/src/envp_list_maker\
+		execution/src/ft_cd\
+		execution/src/ft_echo\
+		execution/src/ft_env\
+		execution/src/ft_export\
+		execution/src/ft_export2\
+		execution/src/ft_export3\
+		execution/src/ft_export4\
+		execution/src/ft_export5\
+		execution/src/ft_pwd\
+		execution/src/ft_unset\
+		execution/src/heredoc_signal\
+		execution/src/pipe_utils\
+		execution/src/pipe_utils2\
+		execution/src/pipe_utils3\
+		execution/src/pipe_utils4\
+		execution/src/pipe\
+		execution/src/pipe2\
+		execution/src/signal\
+		execution/src/util\
+		execution/src/ft_lib\
+		execution/src/ft_lib2\
+		#eidexe/control\
+		#eidexe/echo\
+		#eidexe/env\
+		#eidexe/envp\
+		#eidexe/exe\
+		#eidexe/expand\
+		#eidexe/export\
+		#eidexe/here_doc\
+		#eidexe/print\
+		#eidexe/pwd\
+		#eidexe/unset\
+
 
 SRC = $(addsuffix .c, $(addprefix $(SRC_DIR)/, $(FILES)))
 OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))

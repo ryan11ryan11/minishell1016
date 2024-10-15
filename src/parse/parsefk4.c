@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:24:55 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/15 12:07:57 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/15 14:42:52 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ char	*ms_parsefk4_ctrl(t_data *data)
 	}
 	if (!ms_fillnode(data, data->currmds->content, i, k))
 		return (NULL);
-	data->currmds = data->currmds->next;
-	data->currmds = NULL;
+	data->currmds->next = NULL;
 	return ("Success");
 }
 
@@ -64,6 +63,7 @@ static char	*ms_fillnode(t_data *data, t_node *content, int first, int slast)
 	content->cmd = malloc(size * sizeof(char *));
 	if (!content->cmd)
 		return (NULL);
+	content->cmd[size - 1] = NULL;
 	content->infd = NULL;
 	content->outfd = NULL;
 	content->status = 0;
@@ -78,7 +78,7 @@ static char	*ms_fillnode(t_data *data, t_node *content, int first, int slast)
 }
 
 /**
- * Returns superlast - first + 1, +1 for each << in node, +2 for each <, >, >>
+ * Returns superlast - first + 1, -1 for each << in node, -2 for each <, >, >>
  */
 static int	ms_addsize(t_data *data, int first, int superlast)
 {
@@ -87,7 +87,13 @@ static int	ms_addsize(t_data *data, int first, int superlast)
 	size = superlast - first + 1;
 	while (first < superlast)
 	{
-		if ((data->currstr[first][0] == 60) || (data->currstr[first][0] == 62))
+		if (data->currstr[first][0] == 60)
+		{
+			if (data->currstr[first][1] && data->currstr[first][1] == 60)
+				size++;
+			size -= 2;
+		}
+		if (data->currstr[first][0] == 62)
 			size -= 2;
 		first++;
 	}
@@ -114,7 +120,7 @@ static char	*ms_fillnodext(t_data *data, t_node *content, int i, int k)
 				return (NULL);
 			i += 2;
 		}
-		if ((data->currstr[i]) && (data->currstr[i][0] == 62))
+		else if ((data->currstr[i]) && (data->currstr[i][0] == 62))
 		{
 			content->outfd = ms_strdup(data->currstr[i + 1]);
 			if (!content->outfd)
@@ -123,7 +129,7 @@ static char	*ms_fillnodext(t_data *data, t_node *content, int i, int k)
 				content->status = 1;
 			i += 2;
 		}
-		if ((data->currstr[i])
+		else if ((data->currstr[i])
 			&& (data->currstr[i][0] != 60) && (data->currstr[i][0] != 62))
 		{
 			content->cmd[c] = ms_strdup(data->currstr[i]);
@@ -133,6 +139,5 @@ static char	*ms_fillnodext(t_data *data, t_node *content, int i, int k)
 			c++;
 		}
 	}
-	content->cmd[i] = NULL;
 	return ("Success");
 }

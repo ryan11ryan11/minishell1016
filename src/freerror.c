@@ -6,11 +6,17 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 17:03:10 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/14 15:07:26 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/15 14:44:37 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void		ms_error(t_data *data, char *str, int brexit);
+void		ms_free(t_data *data, int modus);
+static void	ms_freevenmore(t_data *data);
+static void	ms_free_envcstrl(t_data *data, int k);
+static void	ms_freelst(t_list *iamhere);
 
 /**
  * Prints error message, frees everything and exits with error
@@ -30,9 +36,6 @@ void	ms_error(t_data *data, char *str, int brexit)
 */
 void	ms_free(t_data *data, int modus)
 {
-	int	k;
-
-	k = 0;
 	if (data->currinput != NULL)
 	{
 		free(data->currinput);
@@ -43,23 +46,14 @@ void	ms_free(t_data *data, int modus)
 	if (modus == 1)
 	{
 		clear_history();
-		if (data->cstrl != NULL)
-		{
-			while (data->cstrl[k] != NULL)
-			{
-				free(data->cstrl[k]);
-				data->cstrl[k++] = NULL;
-			}
-			free(data->cstrl);
-			data->cstrl = NULL;
-		}
+		ms_free_envcstrl(data, 0);
 	}
 }
 
 /**
  * More than 25 lines
 */
-void	ms_freevenmore(t_data *data)
+static void	ms_freevenmore(t_data *data)
 {
 	int	k;
 
@@ -68,8 +62,10 @@ void	ms_freevenmore(t_data *data)
 	{
 		while (data->currstr[k] != NULL)
 		{
+			printf("+++\t currstr[%i] == !%s! at %p\n", k, data->currstr[k], (void *)data->currstr[k]);
 			free(data->currstr[k]);
-			data->currstr[k++] = NULL;
+			data->currstr[k] = NULL;
+			k++;
 		}
 		free(data->currstr);
 		data->currstr = NULL;
@@ -77,9 +73,40 @@ void	ms_freevenmore(t_data *data)
 }
 
 /**
+ * Frees data->env && data->cstrl
+ * k == 0
+ */
+static void	ms_free_envcstrl(t_data *data, int k)
+{
+	if (data->env != NULL)
+	{
+		while (data->env[k] != NULL)
+		{
+			free(data->env[k]);
+			data->env[k] = NULL;
+			k++;
+		}
+		free(data->env);
+		data->cstrl = NULL;
+	}
+	k = 0;
+	if (data->cstrl != NULL)
+	{
+		while (data->cstrl[k] != NULL)
+		{
+			free(data->cstrl[k]);
+			data->cstrl[k] = NULL;
+			k++;
+		}
+		free(data->cstrl);
+		data->cstrl = NULL;
+	}
+}
+
+/**
  * frees the list \o/
  */
-void	ms_freelst(t_list *iamhere)
+static void	ms_freelst(t_list *iamhere)
 {
 	int	k;
 	t_list *tmp;
@@ -88,7 +115,8 @@ void	ms_freelst(t_list *iamhere)
 	while (iamhere->content->cmd[k])
 	{
 		free(iamhere->content->cmd[k]);
-		iamhere->content->cmd[k++] = NULL;
+		iamhere->content->cmd[k] = NULL;
+		k++;
 	}
 	free(iamhere->content->cmd);
 	iamhere->content->cmd = NULL;

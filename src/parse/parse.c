@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:04:31 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/14 11:02:46 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/15 13:59:19 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,14 @@ void	ms_parse_ctrl(t_data *data)
 {
 	if (!(ms_parsefk1_ctrl(data)))
 		ms_error(data, "parse/parse/26 failloc :(", ENOMEM);
-	printf("---\t test parse1 == %s\n", data->currinput);
 	if (!(ms_parsefk2_ctrl(data)))
 		ms_error(data, "parse/parse/28 failloc :(", ENOMEM);
-	printf("---\t test parse2 == %s\n", data->currinput);
 	if (!(ms_parsefk3_ctrl(data)))
 		ms_error(data, "parse/parse/30 failloc :(", ENOMEM);
-	int i = 0;
+	int	i = 0;
 	while (data->currstr[i])
 	{
-		printf("---\t test parse3[%i] == %s\n", i, data->currstr[i]);
+		printf("---\t currstr[%i] == !%s!\n", i, data->currstr[i]);
 		i++;
 	}
 	if (!(ms_parsefk4_ctrl(data)))

@@ -6,13 +6,13 @@
 #    By: jbober <jbober@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/17 15:25:56 by jbober            #+#    #+#              #
-#    Updated: 2024/10/15 12:04:05 by jbober           ###   ########.fr        #
+#    Updated: 2024/10/15 14:44:59 by jbober           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
-CFLAGS := -Wall -Werror -Wextra #-fsanitize=address -g
+CFLAGS := -Wall -Werror -Wextra -g #-fsanitize=address
 HEADERS = src/minishell.h
 RM = rm -rf
 INCLUDE = -lreadline
@@ -22,8 +22,8 @@ OBJ_DIR = ./obj
 
 FILES = parse/parse\
 		parse/parsefk1\
-		parse/parsefk1b\
 		parse/parsefk2\
+		parse/parsefk2b\
 		parse/parsefk3\
 		parse/parsefk4\
 		envp\

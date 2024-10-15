@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsefk1b.c                                        :+:      :+:    :+:   */
+/*   parsefk2b.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 16:22:02 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/15 12:28:53 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/15 14:40:15 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,12 @@ static int	ms_check_delim(char *str, int i)
 	int	l;
 
 	j = ms_check_delimb(str, i);
-	k = ms_check_delimb(str, i + 1);
-	l = ms_check_delimb(str, i + 2);
+	k = 0;
+	l = 0;
+	if (str[i + 1])
+		k = ms_check_delimb(str, i + 1);
+	if (str[i + 1] && str[i + 2])
+		l = ms_check_delimb(str, i + 2);
 	if (j == 3 && k == 1)
 		return (1);
 	if (j == 3 && k == 2)

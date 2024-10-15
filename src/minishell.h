@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 15:30:25 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/15 14:37:11 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/15 15:43:02 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,14 +142,14 @@ int	ms_check_qt(char c, int *weakqt, int *strongqt);
 
 extern void	ms_parse_ctrl(t_data *data);
 
-// parsefk1
+// parsefk1 + b
 
 extern char	*ms_parsefk1_ctrl(t_data *data);
+extern char	*ms_add_32(char *str, int i, int weakqt, int strongqt);
 
-// parsefk2 + b
+// parsefk2
 
 extern char	*ms_parsefk2_ctrl(t_data *data);
-extern char	*ms_add_32(char *str, int i, int weakqt, int strongqt);
 
 // parsefk3
 

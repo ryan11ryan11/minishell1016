@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 15:30:25 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/14 10:37:00 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/14 15:23:16 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,20 @@ typedef struct s_list
 typedef struct s_node
 {
 	char	**cmd;
-	char	*path;
-	int		infd;
-	int		outfd;
+	char	*infd;
+	char	*outfd;
+	int		status;
+	int		oper;
 }	t_node;
 
 /*
 	--- asd ---
 */
+
+// envp
+
+void	ms_cpy_env(t_data *data, char **arg);
+void	ms_envp(t_data *data, char **envp);
 
 // freerror
 

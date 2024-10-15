@@ -6,11 +6,30 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:47:33 by jbober            #+#    #+#             */
-/*   Updated: 2024/08/29 14:30:11 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/14 16:26:57 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_lastexit;
+
+void	ms_test(t_data *data, t_list *iamhere)
+{
+	int	i;
+	
+	i = 0;
+	while (iamhere->content->cmd[i])
+	{
+		printf("cmd[%i] == %s\n", i, iamhere->content->cmd[i]);
+		i++;
+	}
+	printf("infd == %s\noutfd == %s\nstatus == %i\noper == %i\n", iamhere->content->infd, iamhere->content->outfd, iamhere->content->status, iamhere->content->oper);
+	if (iamhere->next)
+		ms_test(data, iamhere->next);
+}
+
+//-----------------------------------------------------
 
 /**
  * Initializes values to zero
@@ -21,10 +40,7 @@ void	ms_initialize(t_data *data, char **envp)
 	data->currstr = NULL;
 	ms_ctrlitialize(data);
 	g_lastexit = 0;
-	data->exe->std_fd[0] = dup(0);
-	data->exe->std_fd[1] = dup(1);
 	ms_envp(data, envp);
-	data->exe->endline = 0;
 }
 
 /**
@@ -79,11 +95,13 @@ int	main(int argc, char **argv, char **envp)
 		if (ms_read_input(&data) == 1)
 			continue ;
 		data.exe->endline = 0;
+		// need check for this
 		ms_parse_ctrl(&data);
-		exe_control(&data);
-		ms_free(&data, 0);
+		ms_test(&data, data.lstart);
+		//exe_control(&data);
+		//ms_free(&data, 0);
 	}
-	ms_free(&data, 1);
+	//ms_free(&data, 1);
 	g_lastexit = 0;
 	exit(g_lastexit);
 }

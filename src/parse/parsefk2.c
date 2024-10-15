@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:04:43 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/14 10:42:02 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/14 13:08:16 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,13 @@ char	*ms_parsefk2_ctrl(t_data *data)
 {
 	char	*newstr;
 
+	newstr = ms_strdup(data->currinput);
+	if (!newstr)
+		return (NULL);
 	newstr = ms_checkex(data, data->currinput, 0, 42);
 	if (!newstr)
 		return (NULL);
-	free(data->currinput);
+	//free(data->currinput);// Dann klappt das nicht mehr, aber so fehlt doch ein free? currinput ist malloced und wird mit strdup nochmal gemalloced?
 	data->currinput = ms_strdup(newstr);
 	free(newstr);
 	if (!data->currinput)

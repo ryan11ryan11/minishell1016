@@ -6,7 +6,7 @@
 #    By: jbober <jbober@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/17 15:25:56 by jbober            #+#    #+#              #
-#    Updated: 2024/10/14 10:48:39 by jbober           ###   ########.fr        #
+#    Updated: 2024/10/14 15:23:02 by jbober           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,24 +20,13 @@ INCLUDE = -lreadline
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 
-FILES = eidexe/cd\
-		eidexe/control\
-		eidexe/echo\
-		eidexe/env\
-		eidexe/envp\
-		eidexe/exe\
-		eidexe/expand\
-		eidexe/export\
-		eidexe/here_doc\
-		eidexe/print\
-		eidexe/pwd\
-		eidexe/unset\
-		parse/parse\
+FILES = parse/parse\
 		parse/parsefk1\
 		parse/parsefk1b\
 		parse/parsefk2\
 		parse/parsefk3\
 		parse/parsefk4\
+		envp\
 		freerror\
 		minishell\
 		signals\

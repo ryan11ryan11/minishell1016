@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:04:43 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/15 15:23:45 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/15 15:36:04 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,9 @@ static char	*ms_checkex(t_data *data, char *str, int weakqt, int strongqt)
 	i = 0;
 	while (str[i])
 	{
-		printf("+-+\t str[%i] == %c\n", i, str[i]);
 		if ((ms_check_qt(str[i], &weakqt, &strongqt) < 2) && (str[i] == 36))
 		{
 			lenterm = ms_get_lenterm(str, i);
-			printf("---\t weakqt == %i, strongqt == %i\n", weakqt, strongqt);
 			value = ms_get_value(data, str, i, lenterm);
 			if (!value)
 				return (NULL);
@@ -130,7 +128,6 @@ static char	*ms_ex_strjoin(char *str1ng, char *str2ng, int l, int lenterm)
 
 	i = 0;
 	j = 0;
-	printf("+++\t lenterm == %i, l == %i, str1ng == %s, str2ng == %s\n", lenterm, l, str1ng, str2ng);
 	newstr = malloc(ms_strlen(str1ng) + ms_strlen(str2ng) - lenterm + 1);
 	if (!newstr)
 		return (NULL);

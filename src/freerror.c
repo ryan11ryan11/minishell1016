@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 17:03:10 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/15 14:44:37 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/15 15:03:34 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ static void	ms_freevenmore(t_data *data)
 	{
 		while (data->currstr[k] != NULL)
 		{
-			printf("+++\t currstr[%i] == !%s! at %p\n", k, data->currstr[k], (void *)data->currstr[k]);
 			free(data->currstr[k]);
 			data->currstr[k] = NULL;
 			k++;

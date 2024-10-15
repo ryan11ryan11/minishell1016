@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:24:55 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/14 15:30:08 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/15 12:07:57 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ char	*ms_parsefk4_ctrl(t_data *data)
 /**
  * Fills node with adequate information from data->**currstr
  * first == first array for node
- * superlast == one after last array for node
+ * slast[superlast] == one after last array for node
  */
-static char	*ms_fillnode(t_data *data, t_node *content, int first, int superlast)
+static char	*ms_fillnode(t_data *data, t_node *content, int first, int slast)
 {
 	int	size;
 
-	size = ms_addsize(data, first, superlast);
+	size = ms_addsize(data, first, slast);
 	content->cmd = malloc(size * sizeof(char *));
 	if (!content->cmd)
 		return (NULL);
@@ -68,11 +68,11 @@ static char	*ms_fillnode(t_data *data, t_node *content, int first, int superlast
 	content->outfd = NULL;
 	content->status = 0;
 	content->oper = 0;
-	if (data->currstr[superlast] && data->currstr[superlast][0] == 60)//new
+	if (data->currstr[slast] && data->currstr[slast][0] == 60)
 		content->oper = 1;
-	if (data->currstr[superlast] && data->currstr[superlast][0] == 124)//new
+	if (data->currstr[slast] && data->currstr[slast][0] == 124)
 		content->oper = 6;
-	if (!ms_fillnodext(data, content, first, superlast))
+	if (!ms_fillnodext(data, content, first, slast))
 		return (NULL);
 	return ("Success");
 }

@@ -6,7 +6,7 @@
 #    By: jbober <jbober@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/17 15:25:56 by jbober            #+#    #+#              #
-#    Updated: 2024/10/14 15:23:02 by jbober           ###   ########.fr        #
+#    Updated: 2024/10/15 12:04:05 by jbober           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ FILES = parse/parse\
 		ut2ls\
 		ut3ls\
 		ut4ls\
+		ut5ls\
 
 SRC = $(addsuffix .c, $(addprefix $(SRC_DIR)/, $(FILES)))
 OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))

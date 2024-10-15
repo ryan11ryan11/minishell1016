@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsefk3.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/15 12:08:59 by jbober            #+#    #+#             */
+/*   Updated: 2024/10/15 12:09:12 by jbober           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 char		*ms_parsefk3_ctrl(t_data *data);
@@ -118,7 +130,8 @@ static int	ms_partlen(t_data *data, int start)
 			weakqt++;
 		if ((data->currinput[i] == 39) && (weakqt % 2 == 0))
 			strongqt++;
-		if ((data->currinput[i] == 32) && (weakqt % 2 == 0) && (strongqt % 2 == 0))
+		if ((data->currinput[i] == 32) && (weakqt % 2 == 0)
+			&& (strongqt % 2 == 0))
 			return (i);
 		i++;
 	}

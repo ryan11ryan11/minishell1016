@@ -1,16 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsefk1.c                                         :+:      :+:    :+:   */
+/*   newest_parsefk1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:54:56 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/14 16:41:42 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/15 11:22:01 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+
+int	ms_count32(char *str)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (str[i + j])
+	{
+		if ((str[i + j] == 32) && (str[i + j + 1] == 32))
+			j++;
+		else
+			i++;
+	}
+	return (j);
+}
+
+
+static int	ms_check32(char *str, char *set)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		
+	}
+}
+
+
+
 
 char	*ms_parsefk1_ctrl(t_data *data);
 static char	*ms_remove_double32(char *str, int weakqt, int strongqt);

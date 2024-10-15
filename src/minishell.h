@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 15:30:25 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/14 15:23:16 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/15 12:03:42 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,10 @@ void	ms_ctrlitialize(t_data *data);
 void	ms_ctrlfill(t_data *data, int k, char *str);
 int		ms_cinset(char c, char *set, int modus);
 
+// ut5ls
+
+int	ms_check_qt(char c, int *weakqt, int *strongqt);
+
 /*
 	--- eidexe ---
 */
@@ -222,7 +226,7 @@ extern void	ms_parse_ctrl(t_data *data);
 // parsefk1 + b
 
 extern char	*ms_parsefk1_ctrl(t_data *data);
-int		ms_count32(char *str);
+extern char	*ms_add_32(char *str, int i, int weakqt, int strongqt);
 
 // parsefk2
 

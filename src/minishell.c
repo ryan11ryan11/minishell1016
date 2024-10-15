@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:47:33 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/14 16:26:57 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/15 12:07:44 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ms_test(t_data *data, t_list *iamhere)
 	int	i;
 	
 	i = 0;
-	while (iamhere->content->cmd[i])
+	while (iamhere->content->cmd[i])// fix this infinte loop
 	{
 		printf("cmd[%i] == %s\n", i, iamhere->content->cmd[i]);
 		i++;

@@ -6,7 +6,7 @@
 #    By: jbober <jbober@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/17 15:25:56 by jbober            #+#    #+#              #
-#    Updated: 2024/10/16 13:11:02 by jbober           ###   ########.fr        #
+#    Updated: 2024/10/16 14:01:20 by jbober           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,6 @@ FILES = parse/parse\
 		parse/parsefk3\
 		parse/parsefk4\
 		parse/parsefk5\
-		envp\
 		freerror\
 		minishell\
 		signals\

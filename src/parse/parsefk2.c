@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:04:43 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/15 15:59:58 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 14:18:40 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,13 @@ static int	ms_get_lenterm(char *str, int l)
 }
 
 /**
+ * Copies TERM in $TERM to lookme
+ * Checks wether it finds TERM in env[k]
+ * strdups lookme to the value of env[k]
  * Returns malloced *str which is VALUE in TERM=VALUE
- * str[l] == $
  * lenterm == $TERM, while lookeme is "TERM", thus we don't need the usual +1
+ * 		+2 though because we will put the output into ""
+ *	str = str to ?, l = index to $ in $TERM, lenterm = strlen of $TERM
  */
 static char	*ms_get_value(t_data *data, char *str, int l, int lenterm)
 {
@@ -95,22 +99,25 @@ static char	*ms_get_value(t_data *data, char *str, int l, int lenterm)
 	int		k;
 	char	*lookme;
 
-	i = 1;
-	if (str[l + 1] == 63)
-		return (ms_itoa(g_lastexit));
-	lookme = malloc((lenterm) * sizeof(char));
+	i = 0;
+	if (str[l + 1] && str[l + 1] == 63)
+	{
+		lookme = ms_strdup(ms_itoa(g_lastexit));
+		return (lookme);
+	}
+	lookme = malloc((lenterm + 2) * sizeof(char));
 	if (!lookme)
 		return (NULL);
-	while (str[l + i])
+	while ((str[i + l+ 1]) && (i + 1 < lenterm))
 	{
-		lookme[i - 1] = str[l + 1];
+		lookme[i] = str[i + l + 1];
 		i++;
 	}
-	lookme[i - 1] = '\0';
+	lookme[i] = '\0';
 	k = ms_findexpanse(data, lookme);
 	free(lookme);
 	if (k == -1)
-		return (ms_strdup(""));
+		return (ms_strdup("\"\""));
 	lookme = ms_strdup(data->env[k] + lenterm);
 	return (lookme);
 }

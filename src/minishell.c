@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:47:33 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/15 14:37:28 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 14:08:55 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,16 @@ void	ms_test(t_data *data, t_list *iamhere)
 */
 void	ms_initialize(t_data *data, char **envp)
 {
+	//t_exe *ece = {0};
+
+	//data->exe = *ece;
+	g_lastexit = 0;
 	data->currinput = NULL;
 	data->currstr = NULL;
 	ms_ctrlitialize(data);
-	g_lastexit = 0;
+	data->lstart = NULL;
+	data->pid = 0;
 	ms_envp(data, envp);
-
 	data->exe.endline = 0;
 }
 
@@ -86,7 +90,7 @@ int	ms_read_input(t_data *data)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_data	data = {0};
+	t_data	data;
 
 	
 	ms_initialize(&data, envp);

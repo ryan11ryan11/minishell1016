@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:04:31 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 13:25:58 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 14:18:50 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,8 @@ void	ms_parse_ctrl(t_data *data)
 		ms_error(data, "parse/parse/34 failloc :(", ENOMEM);
 }
 
-// Potential Problems:
-// export test="    la" -> jedes space wird ein cmd[k]
-//		- put output in "", trim later (?? aaa)
-// export test=""		-> ein cmd[k] ist "", siehe echo "test"
-
-
-// Problems:
-// echo "test" should be test, is "test", same with 'test'
-//		"'test'" is 'test, but "'"test"'" is 'test', "'"'"'test'"'"'" is '"test"
-// echo "test is waiting for input -> ignores missing "
-
-// -->maybe those are solved by the exepart?
+//	🗸	find correct env thingy
+//		export -> into "", so they get removed as intended
+		// aaah - if $FAKE, should not get a new cmd[k]
+		// in parsefk5 fixen?
+//	🗸	fix $?

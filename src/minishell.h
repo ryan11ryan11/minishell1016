@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 15:30:25 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 12:35:05 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 14:16:48 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_data	t_data;
 typedef struct s_exe	t_exe;
 typedef struct s_list	t_list;
 typedef struct s_node	t_node;
+
 typedef struct s_exe
 {
 	int		tube[2];
@@ -132,7 +133,8 @@ int		ms_cinset(char c, char *set, int modus);
 
 // ut5ls
 
-int	ms_check_qt(char c, int *weakqt, int *strongqt);
+extern int	ms_check_qt(char c, int *weakqt, int *strongqt);
+extern void	ms_envp(t_data *data, char **envp);
 
 /*
 	--- parse ---

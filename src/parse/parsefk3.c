@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 12:35:10 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 13:25:18 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 14:14:08 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static char	*ms_removeqt(char *str, int weakqt, int strongqt)
 
 /**
  * Increses i if a char needs to be skipped on account of being a qt
- * Returns 0 if nothings was skipped, 1 if one char was skipped
+ * Returns number of chars skipped
  * str, i == str[i] to be examined, weakqt == 0, stronqt == 42
  */
 static int	ms_skipqt(char *str, int i, int *weakqt, int *strongqt)

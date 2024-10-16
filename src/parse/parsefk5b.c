@@ -6,14 +6,14 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:39:34 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 17:48:46 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 18:06:01 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 char		*ms_deqtfy_nodes(t_data *data, t_list *iamhere);
-static char	*ms_cleanqt(char *str, int weakqt, int strongqt);
+char		*ms_cleanqt(char *str, int weakqt, int strongqt);
 static int	ms_skipqt(char *str, int i, int *weakqt, int *strongqt);
 static int	ms_countqt(char *str, int weakqt, int strongqt);
 
@@ -41,11 +41,11 @@ char	*ms_deqtfy_nodes(t_data *data, t_list *iamhere)
 }
 
 /**
- * Returns a copy of str without unwanted qts
+ * Returns a malloced copy of str without unwanted qts
  * Frees str
  * str = str to handle, weakqt = 0, strongqt = 42
  */
-static char	*ms_cleanqt(char *str, int weakqt, int strongqt)
+char	*ms_cleanqt(char *str, int weakqt, int strongqt)
 {
 	int		i;
 	int		oldi;

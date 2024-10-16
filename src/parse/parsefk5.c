@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:24:55 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 16:53:57 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 17:03:48 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ static char	*ms_fillnodext(t_data *data, t_node *content, int i, int k)
 	{
 		if (data->currstr[i][0] == 60)
 		{
+			if (!data->currstr[i + 1])
+				return (NULL);
 			content->infd = ms_strdup(data->currstr[i + 1]);
 			if (!content->infd)
 				return (NULL);
@@ -124,6 +126,8 @@ static char	*ms_fillnodext(t_data *data, t_node *content, int i, int k)
 		}
 		else if ((data->currstr[i]) && (data->currstr[i][0] == 62))
 		{
+			if (!data->currstr[i + 1])
+				return (NULL);
 			content->outfd = ms_strdup(data->currstr[i + 1]);
 			if (!content->outfd)
 				return (NULL);

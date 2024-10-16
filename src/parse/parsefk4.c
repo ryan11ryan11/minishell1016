@@ -6,14 +6,14 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:08:59 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 12:38:38 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 14:21:53 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 char		*ms_parsefk4_ctrl(t_data *data);
-static int	ms_getnumwords(char *str);
+static int	ms_getnumwords(char *str, int weakqt, int strongqt);
 static int	ms_fillcurrstr(t_data *data, int numwords);
 static int	ms_additem(t_data *data, int k, int start);
 static int	ms_partlen(t_data *data, int start);
@@ -26,7 +26,7 @@ char	*ms_parsefk4_ctrl(t_data *data)
 {
 	int	numwords;
 
-	numwords = ms_getnumwords(data->currinput);
+	numwords = ms_getnumwords(data->currinput, 0, 42);
 	data->currstr = malloc((numwords + 1) * sizeof(char *));
 	if (!data->currstr)
 		return (NULL);
@@ -38,24 +38,16 @@ char	*ms_parsefk4_ctrl(t_data *data)
 /**
  * Returns the number of words (strings seperated by 32)
  */
-static int	ms_getnumwords(char *str)
+static int	ms_getnumwords(char *str, int weakqt, int strongqt)
 {
 	int	i;
 	int	numwords;
-	int	weakqt;
-	int	strongqt;
 
 	i = 0;
 	numwords = 1;
-	weakqt = 0;
-	strongqt = 42;
 	while (str[i])
 	{
-		if ((str[i] == 34) && (strongqt % 2 == 0))
-			weakqt++;
-		if ((str[i] == 39) && (weakqt % 2 == 0))
-			strongqt++;
-		if ((str[i] == 32) && (weakqt % 2 == 0) && (strongqt % 2 == 0))
+		if ((str[i] == 32) && (!ms_check_qt(str[i], &weakqt, &strongqt)))
 			numwords++;
 		i++;
 	}

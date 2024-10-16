@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:04:31 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 14:18:50 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 15:18:02 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ms_parse_ctrl(t_data *data)
 }
 
 //	🗸	find correct env thingy
-//		export -> into "", so they get removed as intended
+//	🗸	export -> into "", so they get removed as intended
 		// aaah - if $FAKE, should not get a new cmd[k]
 		// in parsefk5 fixen?
 //	🗸	fix $?

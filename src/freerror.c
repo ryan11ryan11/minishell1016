@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   freerror.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 17:03:10 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 15:53:53 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:41:27 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ static void	ms_free_envcstrl(t_data *data, int k)
  */
 static void	ms_freelst(t_list *iamhere)
 {
-	int	k;
+	int		k;
 	t_list *tmp;
 
 	k = 0;

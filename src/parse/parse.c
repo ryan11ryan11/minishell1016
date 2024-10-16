@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:04:31 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 15:55:23 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:00:50 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,12 @@ void	ms_parse_ctrl(t_data *data)
 		ms_error(data, "parse/parse/26 failloc :(", ENOMEM);
 	if (!(ms_parsefk2_ctrl(data)))
 		ms_error(data, "parse/parse/28 failloc :(", ENOMEM);
-	if (!(ms_parsefk3_ctrl(data)))
-		ms_error(data, "parse/parse/30 failloc :(", ENOMEM);
+	// if (!(ms_parsefk3_ctrl(data)))
+	// 	ms_error(data, "parse/parse/30 failloc :(", ENOMEM);
 	if (!(ms_parsefk4_ctrl(data)))
 		ms_error(data, "parse/parse/32 failloc :(", ENOMEM);
 	if (!(ms_parsefk5_ctrl(data)))
 		ms_error(data, "parse/parse/34 failloc :(", ENOMEM);
 }
+
+// echo >

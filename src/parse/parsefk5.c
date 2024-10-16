@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 18:24:55 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 12:38:43 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 16:53:57 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ char	*ms_parsefk5_ctrl(t_data *data)
 	if (!ms_fillnode(data, data->currmds->content, i, k))
 		return (NULL);
 	data->currmds->next = NULL;
+	if (!ms_deqtfy_nodes(data, data->lstart))
+		return (NULL);
 	return ("Success");
 }
 

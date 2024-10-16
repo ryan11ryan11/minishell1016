@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+         #
+#    By: jbober <jbober@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/17 15:25:56 by jbober            #+#    #+#              #
-#    Updated: 2024/10/16 15:52:19 by junhhong         ###   ########.fr        #
+#    Updated: 2024/10/16 16:51:46 by jbober           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ FILES = parse/parse\
 		parse/parsefk3\
 		parse/parsefk4\
 		parse/parsefk5\
+		parse/parsefk5b\
 		freerror\
 		minishell\
 		signals\

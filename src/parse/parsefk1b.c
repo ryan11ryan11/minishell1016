@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsefk2b.c                                        :+:      :+:    :+:   */
+/*   parsefk1b.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 16:22:02 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/15 14:40:15 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 17:00:03 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*ms_add_32(char *str, int i, int weakqt, int strongqt)
 	while (str[i])
 	{
 		newstr[i + j] = str[i];
-		if (!ms_check_qt(str[i], &weakqt, &strongqt))
+		if (!ms_check_qt(str[i], &weakqt, &strongqt) && str[i] != 34 && str[i] != 39)
 		{
 			if (ms_check_delim(str, i) == 1)
 			{

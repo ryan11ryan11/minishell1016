@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsefk2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:04:43 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 15:56:15 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:34:43 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*ms_checkex(t_data *data, char *str, int weakqt, int strongqt)
 	while (str[i])
 	{
 		
-		if ((ms_check_qt(str[i], &weakqt, &strongqt) < 2) && (str[i] == 36))
+		if ((ms_check_qt(str[i], &weakqt, &strongqt) < 2) && (str[i] == 36) && (str[i + 1] && str[i + 1] != 32))
 		{
 			lenterm = ms_get_lenterm(str, i);
 			value = ms_get_value(data, str, i, lenterm);

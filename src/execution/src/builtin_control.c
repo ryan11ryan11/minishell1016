@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 11:57:20 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/16 15:18:39 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:54:20 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	builtin(t_data *data, t_list *list)
 	if (ft_strlcmp_limited(list->content->cmd[0], "pwd") == 0)
 		return(ft_pwd());
 	if (ft_strlcmp_limited(list->content->cmd[0], "export") == 0)
-		return(ft_export(data, line, list));
+		return(ft_export(data, line));
 	if (ft_strlcmp_limited(list->content->cmd[0], "env") == 0)
 		return(ft_env(data));
 	if (ft_strlcmp_limited(list->content->cmd[0], "unset") == 0)

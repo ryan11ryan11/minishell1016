@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:47:21 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/16 15:18:45 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:53:27 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,33 +71,7 @@ int	add_to_list(char **arr, t_data *data)
 	return (1);
 }
 
-// int	ft_export(t_data *data, char *line)
-// {
-// 	char	**new_arr;
-
-// 	new_arr = new_arr_maker(line);
-
-// 	int i = 0;
-// 	while(new_arr[i])
-// 	{
-// 		printf("new_arr[%d]:%s\n",i,new_arr[i]);
-// 		i ++;
-// 	}
-
-// 	if (new_arr[1] == NULL || ft_strlcmp_limited(new_arr[1], "|") == 0)
-// 	{
-// 		print_all(data->envlist);
-// 		doublearr_free(&new_arr);
-// 		return (0);
-// 	}
-// 	fix_arr(new_arr);
-// 	add_to_list(new_arr, data);
-// 	envp_maker(data);
-// 	doublearr_free(&new_arr);
-// 	return (0);
-// }
-
-int	ft_export(t_data *data, char *line, t_list *list)
+int	ft_export(t_data *data, char *line)
 {
 	char	**new_arr;
 
@@ -122,3 +96,29 @@ int	ft_export(t_data *data, char *line, t_list *list)
 	doublearr_free(&new_arr);
 	return (0);
 }
+
+// int	ft_export(t_data *data, char *line, t_list *list)
+// {
+// 	char	**new_arr;
+
+// 	new_arr = new_arr_maker(line);
+
+// 	int i = 0;
+// 	while(new_arr[i])
+// 	{
+// 		printf("new_arr[%d]:%s\n",i,new_arr[i]);
+// 		i ++;
+// 	}
+
+// 	if (new_arr[1] == NULL || ft_strlcmp_limited(new_arr[1], "|") == 0)
+// 	{
+// 		print_all(data->envlist);
+// 		doublearr_free(&new_arr);
+// 		return (0);
+// 	}
+// 	fix_arr(new_arr);
+// 	add_to_list(new_arr, data);
+// 	envp_maker(data);
+// 	doublearr_free(&new_arr);
+// 	return (0);
+// }

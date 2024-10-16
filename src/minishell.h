@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 15:30:25 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 14:43:14 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:52:05 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ void	env_free(char **env);
 char	**rm_env(t_data *data, char **str);
 char	**add_env(t_data *data, char **str);
 void	ms_cpy_env(t_data *data, char **arg);
-void	ms_envp(t_data *data, char **envp);
+extern void	ms_envp(t_data *data, char **envp);
 
 // exe
 
@@ -228,7 +228,7 @@ void	check_arg_u_e(t_data *data, char **arg, int start);
 void	fill_arg(t_data *data, char **arg, char **str, int start);
 int		ms_arglen(char **arg, int start);
 void	ms_unset(t_data *data, t_node *node);
-int		ms_check_qt(char c, int *weakqt, int *strongqt);
+extern int		ms_check_qt(char c, int *weakqt, int *strongqt);
 
 /*
 	--- parse ---
@@ -238,14 +238,14 @@ int		ms_check_qt(char c, int *weakqt, int *strongqt);
 
 extern void	ms_parse_ctrl(t_data *data);
 
-// parsefk1
+// parsefk1 + b
 
 extern char	*ms_parsefk1_ctrl(t_data *data);
+extern char	*ms_add_32(char *str, int i, int weakqt, int strongqt);
 
-// parsefk2 + b
+// parsefk2
 
 extern char	*ms_parsefk2_ctrl(t_data *data);
-extern char	*ms_add_32(char *str, int i, int weakqt, int strongqt);
 
 // parsefk3
 
@@ -408,5 +408,10 @@ size_t	ft_strlcat(char *dest, const char *src, size_t size);
 //utils
 char	*without_data(char *str);
 void	print_current_path();
+
+// parsefk5
+
+extern char	*ms_parsefk5_ctrl(t_data *data);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 13:40:44 by rakropp           #+#    #+#             */
-/*   Updated: 2024/10/15 14:59:40 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:52:12 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	ms_findexpanse(t_data *data, char *str)
 	k = 0;
 	while (data->env[k])
 	{
-		if (ms_strncmp(data->env[k], str, ms_strlen(str)) == 0)
+		if (!ms_strncmp(data->env[k], str, ms_strlen(str)))
 			return (k);
 		k++;
 	}

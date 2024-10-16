@@ -6,7 +6,7 @@
 #    By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/17 15:25:56 by jbober            #+#    #+#              #
-#    Updated: 2024/10/15 15:02:22 by junhhong         ###   ########.fr        #
+#    Updated: 2024/10/16 15:52:19 by junhhong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +22,11 @@ OBJ_DIR = ./obj
 
 FILES = parse/parse\
 		parse/parsefk1\
+		parse/parsefk1b\
 		parse/parsefk2\
-		parse/parsefk2b\
 		parse/parsefk3\
 		parse/parsefk4\
-		envp\
+		parse/parsefk5\
 		freerror\
 		minishell\
 		signals\

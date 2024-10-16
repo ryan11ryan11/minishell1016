@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:47:33 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 15:24:32 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:53:07 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void	test_print(t_data *data)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_data	data = {0};
+	t_data	data;
 
 	
 	ms_initialize(&data, envp);

@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:04:43 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 16:34:43 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 17:19:33 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,13 @@ static char	*ms_checkex(t_data *data, char *str, int weakqt, int strongqt)
 	while (str[i])
 	{
 		
-		if ((ms_check_qt(str[i], &weakqt, &strongqt) < 2) && (str[i] == 36) && (str[i + 1] && str[i + 1] != 32))
+		if ((ms_check_qt(str[i], &weakqt, &strongqt) < 2) && (str[i] == 36) && (str[i + 1] && str[i + 1] != 32 && str[i + 1] != 34))
 		{
+			if (str[i + 1] && str[i + 1] == 36)
+			{
+				i++;
+				break;
+			}
 			lenterm = ms_get_lenterm(str, i);
 			value = ms_get_value(data, str, i, lenterm);
 			if (!value)

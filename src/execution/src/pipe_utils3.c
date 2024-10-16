@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:41:00 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/15 12:22:19 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 14:57:34 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	case_outfile(t_node *argvt)
 {
 	int	fd;
 
-	if (argvt->appnd == 0)
+	if (argvt->status == 0)
 		fd = open(argvt->outfd, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (argvt->appnd == 1)
+	if (argvt->status == 1)
 		fd = open(argvt->outfd, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
@@ -97,14 +97,13 @@ void	case_heredoc(t_data *data)
 	}
 }
 
-
 int	case_infile(t_data *data)
 {
 	int		fd;
 	t_node	*argvt;
 
 	argvt = data->lstart->content;
-	if (argvt->appnd == 0)
+	if (argvt->status == 0)
 	{
 		fd = open(argvt->infd, O_RDONLY);
 		if (fd == -1)
@@ -118,58 +117,56 @@ int	case_infile(t_data *data)
 	return (0);
 }
 
-t_list	*prv_list_finder(t_list *list)
+t_list	*prv_list_finder(t_data *data, t_list *current_node)
 {
 	t_list	*tmp;
+	t_list	*prev;
 
-	tmp = list;
+	tmp = data->lstart;
+	prev = NULL;
 	while (tmp)
 	{
-		if (tmp == list)
-			return (tmp);
+		if (tmp == current_node)
+			return (prev);
+		prev = tmp;
 		tmp = tmp->next;
 	}
 	return (NULL);
 }
 
-void	child_process(t_data *data, int i)
+void	child_process(t_data *data, t_list *crt_node, int i)
 {
 	char	*command;
 	char	*path;
 	t_list	*prv_list;
-	//t_node	*argvt;
-	t_list	*list;
 
-	list = data->lstart;
 	command = NULL;
 	prv_list = NULL;
-	//argvt = data->lstart->content;
-	if (prv_list_finder(list))
-		prv_list = prv_list_finder(list);
-	if (prv_list->content->oper == 1)
+	prv_list = prv_list_finder(data, crt_node);
+	if (prv_list && prv_list->content->oper == 1)
 		exit (0);
-	if ((list->content->oper == 6) || (prv_list && prv_list->content->oper == 6))
-		exec_pipe(data, i);
-	if (list->content->outfd != NULL)
-		case_outfile(list->content);
-	if (list->content->infd != NULL)
+	// if ((crt_node->content->oper == 6) || (prv_list && prv_list->content->oper == 6))
+	// 	exec_pipe(data, i);
+	if (crt_node->content->outfd != NULL)
+		case_outfile(crt_node->content);
+	if (crt_node->content->infd != NULL)
 		case_infile(data);
-	if (list->content->oper == 1)
-		case_heredoc(data); // argv[0]이상 있을 경우?
-	// if ((argvt->oper == 6) || (prv_argvt && prv_argvt->oper == 6))
-	// 	exec_pipe(info, i);
-	if (list->content->cmd[0])
-		command = list->content->cmd[0];
+	if (crt_node->content->oper == 1)
+		case_heredoc(data);
+	if ((crt_node->content->oper == 6) || (prv_list && prv_list->content->oper == 6))
+		exec_pipe(data, i);
+	if (crt_node->content->cmd[0])
+		command = crt_node->content->cmd[0];
 	else
 		perror("error");
-	builtin_situation(data);
+	builtin_situation(data, crt_node);
 	path = pathfinder(command, data);
 	if (!path)
 		error_exit(command, 1);
-	if (path && (char *const *)list->content->cmd && data->new_envp)
+	if (path && (char *const *)crt_node->content->cmd && data->new_envp)
 	{
 		envp_maker(data);
-		execve(path, (char *const *)list->content->cmd, data->new_envp);
+		execve(path, (char *const *)crt_node->content->cmd, data->new_envp);
 		error_exit("execve error", 1);
 	}
 }
@@ -229,32 +226,32 @@ int	parent_process_exec(t_data *data)
 	if (ft_strlcmp_limited(argv[0], "export") == 0)
 		return(ft_export(data, data->currinput));
 	if (ft_strlcmp_limited(argv[0], "unset") == 0)
-		return(ft_unset(data));
+		return(ft_unset(data, data->lstart));
 	if (ft_strlcmp_limited(argv[0], "cd") == 0)
-		return (ft_cd(data));
+		return (ft_cd(data->lstart));
 	if (ft_strlcmp_limited(argv[0], "env") == 0)
 		return(ft_env(data));
 	if (ft_strlcmp_limited(argv[0], "pwd") == 0)
 		return(ft_pwd());
 	if (ft_strlcmp_limited(argv[0], "echo") == 0)
-		return(ft_echo(data));
+		return(ft_echo(data, data->lstart));
 	return (1);
 }
 
-int		is_pipe(t_list *lstart, t_data *data)
+int		is_pipe(t_data *data)
 {
-	t_node *argvt;
+	t_list	*tmp;
 
-	while(lstart)
+	tmp = data->lstart;
+	while(tmp)
 	{
-		argvt = data->lstart->content;
-		if (argvt->oper == 6)
+		if (tmp->content->oper == 6)
 			return (1);
-		if (argvt->infd != NULL)
+		if (tmp->content->infd != NULL)
 			return (1);
-		if (argvt->outfd != NULL)
+		if (tmp->content->outfd != NULL)
 			return (1);
-		lstart = lstart->next;
+		tmp = tmp->next;
 	}
 	return (-1);
 }
@@ -263,24 +260,25 @@ void	exec_command(t_data *data)
 {
 	int		i;
 	t_node	*argvt;
+	t_list	*tmp;
 
 	argvt = data->lstart->content;
-
 	if (exec_command_errcheck(data) == -1)
 		return ;
-	if (is_pipe(data->lstart, data) == -1 && builtin_exception(data) == 1)
+	if (is_pipe(data) == -1 && builtin_exception(data->lstart) == 1)
 	{
 		data->errcode = parent_process_exec(data);
 		return ;
 	}
 	i = -1;
-	while (data->lstart)
+	tmp = data->lstart;
+	while (tmp)
 	{
 		i ++;
 		data->pid[i] = fork();
 		if (data->pid[i] == 0)
-			child_process(data, i);
-		data->lstart = data->lstart->next;
+			child_process(data, tmp, i);
+		tmp = tmp->next;
 	}
 	parent_process(data);
 }

@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:08:27 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/15 11:42:59 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:19:45 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,15 @@ t_envlist	*find_value_envlist(t_envlist *envlist, char *arr)
 	return (NULL);
 }
 
-int	ft_unset(t_data *data)
+int	ft_unset(t_data *data, t_list *list)
 {
 	int			i;
 	t_envlist	*tmp;
 
 	i = 0;
-	while (data->lstart->content->cmd[i])
+	while (list->content->cmd[i])
 	{
-		tmp = find_value_envlist(data->envlist, data->lstart->content->cmd[i]);
+		tmp = find_value_envlist(data->envlist, list->content->cmd[i]);
 		if (tmp != NULL)
 			delete_node(&data->envlist, tmp);
 		i ++ ;

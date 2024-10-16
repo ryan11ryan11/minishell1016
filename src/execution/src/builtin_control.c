@@ -6,28 +6,25 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 11:57:20 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/15 11:42:30 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:18:39 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	builtin_exception(t_data *data)
+int	builtin_exception(t_list *node)
 {
-	char	**argv;
-
-	argv = data->lstart->content->cmd;
-	if (ft_strlcmp_limited(argv[0], "echo") == 0)
+	if (ft_strlcmp_limited(node->content->cmd[0], "echo") == 0)
 		return (1);
-	if (ft_strlcmp_limited(argv[0], "cd") == 0)
+	if (ft_strlcmp_limited(node->content->cmd[0], "cd") == 0)
 		return (1);
-	if (ft_strlcmp_limited(argv[0], "pwd") == 0)
+	if (ft_strlcmp_limited(node->content->cmd[0], "pwd") == 0)
 		return (1);
-	if (ft_strlcmp_limited(argv[0], "export") == 0)
+	if (ft_strlcmp_limited(node->content->cmd[0], "export") == 0)
 		return (1);
-	if (ft_strlcmp_limited(argv[0], "env") == 0)
+	if (ft_strlcmp_limited(node->content->cmd[0], "env") == 0)
 		return (1);
-	if (ft_strlcmp_limited(argv[0], "unset") == 0)
+	if (ft_strlcmp_limited(node->content->cmd[0], "unset") == 0)
 		return (1);
 	return (0);
 }
@@ -63,27 +60,23 @@ int	ft_strcmp2(const char *s1, const char *s2)
 	return (0);
 }
 
-int	builtin(t_data *data)
+int	builtin(t_data *data, t_list *list)
 {
 	char	*line;
-	char	**argv;
-	t_node	*argvt;
 
 	line = data->currinput;
-	argv = data->lstart->content->cmd;
-	argvt = data->lstart->content;
-	if (ft_strlcmp_limited(argv[0], "echo") == 0)
-		return (ft_echo(data));
-	if (ft_strlcmp_limited(argv[0], "cd") == 0)
-		return (ft_cd(data));
-	if (ft_strlcmp_limited(argv[0], "pwd") == 0)
+	if (ft_strlcmp_limited(list->content->cmd[0], "echo") == 0)
+		return (ft_echo(data, list));
+	if (ft_strlcmp_limited(list->content->cmd[0], "cd") == 0)
+		return (ft_cd(list));
+	if (ft_strlcmp_limited(list->content->cmd[0], "pwd") == 0)
 		return(ft_pwd());
-	if (ft_strlcmp_limited(argv[0], "export") == 0)
-		return(ft_export(data, line));
-	if (ft_strlcmp_limited(argv[0], "env") == 0)
+	if (ft_strlcmp_limited(list->content->cmd[0], "export") == 0)
+		return(ft_export(data, line, list));
+	if (ft_strlcmp_limited(list->content->cmd[0], "env") == 0)
 		return(ft_env(data));
-	if (ft_strlcmp_limited(argv[0], "unset") == 0)
-		return(ft_unset(data));
+	if (ft_strlcmp_limited(list->content->cmd[0], "unset") == 0)
+		return(ft_unset(data, list));
 	return (0);
 }
 

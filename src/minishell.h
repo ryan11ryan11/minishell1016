@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 15:30:25 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/15 14:44:49 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 14:43:14 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,8 @@ void	ms_envp(t_data *data, char **envp);
 
 // freerror
 
-void	ms_error(t_data *data, char *str, int brexit);
-//void	ms_free(t_data *data, int modus);
-// void	ms_freevenmore(t_data *data);
-// void	ms_freelst(t_list *iamhere);
+extern void	ms_error(t_data *data, char *str, int brexit);
+extern void	ms_free(t_data *data, int modus);
 
 // minishell
 
@@ -154,9 +152,7 @@ void	ms_ctrlitialize(t_data *data);
 void	ms_ctrlfill(t_data *data, int k, char *str);
 int		ms_cinset(char c, char *set, int modus);
 
-/*
-	--- eidexe ---
-*/
+// ut5ls
 
 // cd
 
@@ -232,6 +228,7 @@ void	check_arg_u_e(t_data *data, char **arg, int start);
 void	fill_arg(t_data *data, char **arg, char **str, int start);
 int		ms_arglen(char **arg, int start);
 void	ms_unset(t_data *data, t_node *node);
+int		ms_check_qt(char c, int *weakqt, int *strongqt);
 
 /*
 	--- parse ---
@@ -241,14 +238,14 @@ void	ms_unset(t_data *data, t_node *node);
 
 extern void	ms_parse_ctrl(t_data *data);
 
-// parsefk1 + b
+// parsefk1
 
 extern char	*ms_parsefk1_ctrl(t_data *data);
-int		ms_count32(char *str);
 
-// parsefk2
+// parsefk2 + b
 
 extern char	*ms_parsefk2_ctrl(t_data *data);
+extern char	*ms_add_32(char *str, int i, int weakqt, int strongqt);
 
 // parsefk3
 
@@ -265,10 +262,10 @@ extern char	*ms_parsefk4_ctrl(t_data *data);
 
 // builtin_control
 int	count_arg(t_data *data);
-int	builtin(t_data *data);
+int	builtin(t_data *data, t_list *list);
 int	ft_strcmp2(const char *s1, const char *s2);
 int	builtin_exception2(char *arr);
-int	builtin_exception(t_data *data);
+int	builtin_exception(t_list *node);
 
 //envlistclear
 void	envlistclear(t_envlist *envlist);
@@ -283,7 +280,7 @@ int		envlistmaker(t_data *data, char *env[]);
 //ft_cd
 int		no_argument(t_node *content);
 int		slash_up(t_node *argvt, char *input);
-int		ft_cd(t_data *data);
+int		ft_cd(t_list *list);
 
 //ft_echo
 char	**argv_maker(char *line);
@@ -294,7 +291,7 @@ char	**filearr_maker(int file_num);
 char	**filename_arr_maker(DIR *dir);
 int		print_directory();
 int		print_argv(t_node *argvt, int i);
-int		ft_echo(t_data *data);
+int		ft_echo(t_data *data, t_list *node);
 
 //ft_env
 int		ft_env(t_data *data);
@@ -336,17 +333,15 @@ int		ft_pwd(void);
 //ft_unset
 void	delete_node(t_envlist **head, t_envlist *node_to_delete);
 t_envlist	*find_value_envlist(t_envlist *envlist, char *arr);
-int		ft_unset(t_data *data);
+int		ft_unset(t_data *data, t_list *list);
 
 //herdoc_signal
 void	heredoc_ctrl_c(int signum);
-void	heredoc_signal(void);
+void	exec_pipe(t_data *data, int i);
+void	free_pipe(t_data *info);
 
 //pipe
 void	init_pipe(t_data *data);
-void	pipe_all_close(t_data *data);
-void	exec_pipe(t_data *data, int i);
-void	free_pipe(t_data *info);
 
 //pipe2
 int		count_pipe(t_data *data);
@@ -367,18 +362,18 @@ int		all_component_check(t_data *data);
 void	all_pipe_close(t_data *data);
 char	*new_path_maker(char *input);
 void	error_exit(char *msg, int error_number);
-void	builtin_situation(t_data *data);
+void	builtin_situation(t_data *data, t_list *list);
 
 //pipe_utils3
 void	case_outfile(t_node *argvt);
 char	*get_last_word(char *buffer, int index);
 void	case_heredoc(t_data *data);
 int		case_infile(t_data *data);
-void	child_process(t_data *data, int i);
+void	child_process(t_data *data, t_list *crt_node, int i);
 void	parent_process(t_data *data);
 int		exec_command_errcheck(t_data *data);
 int		parent_process_exec(t_data *data);
-int		is_pipe(t_list *currmds, t_data *data);
+int		is_pipe(t_data *data);
 void	exec_command(t_data *data);
 
 //pipe_utils2

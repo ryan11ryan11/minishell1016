@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:40:00 by jbober            #+#    #+#             */
-/*   Updated: 2024/08/21 14:48:17 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/15 13:08:36 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,18 @@ t_list	*ms_lstnew(t_data *data)
 void	ms_lstadd_back(t_data *data, t_list **lst)
 {
 	t_list	*last;
+	t_list	*new;
 
-	last = ms_lstlast(*lst);
-	if (!last)
+	new = ms_lstnew(data);
+	if (!new)
+		ms_error(data, "ut3ls.c 73: failloc :(", ENOMEM);
+	if (!*lst)
 	{
-		*lst = malloc(sizeof(t_list));
-		if (!(*lst))
-			ms_error(data, "ut3ls.c 75: failloc :(", ENOMEM);
-		(*lst)->content = malloc(sizeof(t_node));
-		if (!((*lst)->content))
-			ms_error(data, "ut3ls.c 78: failloc :(", ENOMEM);
+		*lst = new;
 		return ;
 	}
-	last->next = *lst;
+	last = ms_lstlast(*lst);
+	last->next = new;
 }
 
 t_list	*ms_lstlast(t_list *lst)

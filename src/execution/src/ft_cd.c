@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 11:56:01 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/15 11:42:38 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:18:22 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,17 @@ int	slash_up(t_node *argvt, char *input)
 	return (-1);
 }
 
-int	ft_cd(t_data *data)
+int	ft_cd(t_list *list)
 {
 	char	*new_path;
 	char	*input;
 	int		result;
 
-	input = data->lstart->content->cmd[1];
-	result = no_argument(data->lstart->content);
+	input = list->content->cmd[1];
+	result = no_argument(list->content);
 	if (result >= 0)
 		return (result);
-	result = slash_up(data->lstart->content, input);
+	result = slash_up(list->content, input);
 	if (result >= 0)
 		return (result);
 	new_path = new_path_maker(input);

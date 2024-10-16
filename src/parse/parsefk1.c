@@ -1,40 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsefk1.c                                         :+:      :+:    :+:   */
+/*   parsefk2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/29 13:04:40 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/14 15:47:13 by jbober           ###   ########.fr       */
+/*   Created: 2024/08/29 13:04:43 by jbober            #+#    #+#             */
+/*   Updated: 2024/10/15 13:59:37 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 char		*ms_parsefk1_ctrl(t_data *data);
-static char	*ms_remove_double32(char *str);
-static int	ms_countseps(char *str);
-static int	ms_checkseps(char *str, int i);
-static char	*ms_placeseps(char *str, int numseps, int weakqt, int strongqt);
+static char	*ms_checkex(t_data *data, char *str, int weakqt, int strongqt);
+static int	ms_get_lenterm(char *str, int l);
+static char	*ms_get_value(t_data *data, char *str, int l, int lenterm);
+static char	*ms_ex_strjoin(char *str1ng, char *str2ng, int l, int lenterm);
 
 /**
  * Control structure
- * Seperates >>, >, |, <, << (turning >outfile to > outfile)
+ * Expands $*
  */
 char	*ms_parsefk1_ctrl(t_data *data)
 {
-	int		numseps;
 	char	*newstr;
 
-	data->currinput = ms_remove_double32(data->currinput);
-	if (!data->currinput)
-		return (NULL);
-	numseps = ms_countseps(data->currinput);
-	newstr = ms_placeseps(data->currinput, numseps, 0, 42);
+	newstr = ms_strdup(data->currinput);
 	if (!newstr)
 		return (NULL);
-	free(data->currinput);
+	newstr = ms_checkex(data, data->currinput, 0, 42);
+	if (!newstr)
+		return (NULL);
 	data->currinput = ms_strdup(newstr);
 	free(newstr);
 	if (!data->currinput)
@@ -43,87 +40,86 @@ char	*ms_parsefk1_ctrl(t_data *data)
 }
 
 /**
- * Removes any multiple 32
- * frees(str)
+ * Checks str for $, expands them
+ * Returns malloced str
  */
-static char	*ms_remove_double32(char *str)
+static char	*ms_checkex(t_data *data, char *str, int weakqt, int strongqt)
 {
 	int		i;
-	int		j;
-	char	*newstr;
+	int		lenterm;
+	char	*value;
 
 	i = 0;
-	j = 0;
-	newstr = malloc((ms_strlen(str) - ms_count32(str) + 1) * sizeof(char));
-	if (!newstr)
-		return (NULL);
-	while (str[i + j])
+	while (str[i])
 	{
-		if ((str[i + j] == 32) && (((str[i + j + 1] == 32) || !(str[i + j + 1]))
-			|| !(i + j)))
-			j++;
-		else
+		if ((ms_check_qt(str[i], &weakqt, &strongqt) < 2) && (str[i] == 36))
 		{
-			newstr[i] = str[i + j];
-			i++;
+			lenterm = ms_get_lenterm(str, i);
+			value = ms_get_value(data, str, i, lenterm);
+			if (!value)
+				return (NULL);
+			str = ms_ex_strjoin(str, value, i, lenterm);
+			if (!str)
+				return (NULL);
 		}
+		i++;
 	}
-	newstr[i] = '\0';
-	free(str);
-	return (newstr);
+	return (str);
 }
 
 /**
- * Returns the number of seperator needed to seperate all >>, >, |, <, <<
+ * Returns len of $TERM in TERM=VALUE
+ * str[l] == $
  */
-static int	ms_countseps(char *str)
+static int	ms_get_lenterm(char *str, int l)
 {
 	int	i;
-	int	j;
-	int	weakqt;
-	int	strongqt;
 
-	i = 0;
-	j = 0;
-	weakqt = 0;
-	strongqt = 42;
-	while (str[i])
+	i = 1;
+	if (str[l + 1] == 63)
+		return (2);
+	while (!(ms_cinset(str[l + i], " \t\n=:;|&'\"`(){}/$?*@", 1)))
+		i++;
+	return (i);
+}
+
+/**
+ * Returns malloced *str which is VALUE in TERM=VALUE
+ * str[l] == $
+ * lenterm == $TERM, while lookeme is "TERM", thus we don't need the usual +1
+ */
+static char	*ms_get_value(t_data *data, char *str, int l, int lenterm)
+{
+	int		i;
+	int		k;
+	char	*lookme;
+
+	i = 1;
+	if (str[l + 1] == 63)
+		return (ms_itoa(g_lastexit));
+	lookme = malloc((lenterm) * sizeof(char));
+	if (!lookme)
+		return (NULL);
+	while (str[l + i])
 	{
-		if ((str[i] == 34) && !(strongqt % 2))
-			weakqt++;
-		if ((str[i] == 39) && !(weakqt % 2))
-			strongqt++;
-		if ((ms_checkseps(str, i)) && !(weakqt % 2) && !(strongqt % 2))
-			j++;
+		lookme[i - 1] = str[l + 1];
 		i++;
 	}
-	return (j);
+	lookme[i - 1] = '\0';
+	k = ms_findexpanse(data, lookme);
+	free(lookme);
+	if (k == -1)
+		return (ms_strdup(""));
+	lookme = ms_strdup(data->env[k] + lenterm);
+	return (lookme);
 }
 
 /**
- * Checks wether str[i] should contain a 32
- * 	- because it is followed by >>, >, |, <, <<
- *  - because it follows >>, >, |, <, <<
- * Returns 1 for yes, 0 for no
+ * Returns a malloced *str made out of str1ng til l,
+ * 		str2ng, str1ng after (l + lenterm)
+ * Frees str1ng and str2ng
  */
-static int	ms_checkseps(char *str, int i)
-{
-	if ((str[i] == 60) && !(ms_cinset(str[i + 1], "< ", 1)))
-		return (1);
-	if ((str[i] == 62) && !(ms_cinset(str[i + 1], "> ", 1)))
-		return (1);
-	if ((str[i] == 124) && !(ms_cinset(str[i + 1], " ", 1)))
-		return (1);
-	if (!(ms_cinset(str[i], " <|>", 0)) && (ms_cinset (str[i + 1], "<|>", 0)))
-		return (1);
-	return (0);
-}
-
-/**
- * Seperates all >>, >, |, <, << in *str
- * Returns a malloced *str
- */
-static char	*ms_placeseps(char *str, int numseps, int weakqt, int strongqt)
+static char	*ms_ex_strjoin(char *str1ng, char *str2ng, int l, int lenterm)
 {
 	int		i;
 	int		j;
@@ -131,22 +127,27 @@ static char	*ms_placeseps(char *str, int numseps, int weakqt, int strongqt)
 
 	i = 0;
 	j = 0;
-	newstr = malloc((ms_strlen(str) + numseps + 1) * sizeof(char));
+	printf("+++\t lenterm == %i, l == %i, str1ng == %s, str2ng == %s\n", lenterm, l, str1ng, str2ng);
+	newstr = malloc(ms_strlen(str1ng) + ms_strlen(str2ng) - lenterm + 1);
 	if (!newstr)
 		return (NULL);
-	while (str[i])
+	while (i < l)
 	{
-		if ((str[i] == 34) && !(strongqt % 2))
-			weakqt++;
-		if ((str[i] == 39) && !(weakqt % 2))
-			strongqt++;
-		if ((ms_checkseps(str, i)) && !(weakqt) && !(strongqt))
-		{
-			newstr[i + j] = 32;
-			j++;
-		}
-		newstr[i + j] = str[i];
+		newstr[i] = str1ng[i];
 		i++;
 	}
+	while ((i + j) < (l + ms_strlen(str2ng)))
+	{
+		newstr[i + j] = str2ng[j];
+		j++;
+	}
+	while ((l + lenterm) < (ms_strlen(str1ng)))
+	{
+		newstr[l + ms_strlen(str2ng)] = str1ng[l + lenterm];
+		l++;
+	}
+	newstr[l + ms_strlen(str2ng)] = '\0';
+	free(str1ng);
+	free(str2ng);
 	return (newstr);
 }

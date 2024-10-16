@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:47:33 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/15 14:45:09 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:24:32 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@ void	ms_test(t_data *data, t_list *iamhere)
 	int	i;
 	
 	i = 0;
-	while (iamhere->content->cmd[i])
+	if (!iamhere)
+		return ;
+	printf("\n...\t Start List\t...\n");
+	while (iamhere->content && iamhere->content->cmd[i])
 	{
 		printf("cmd[%i] == %s\n", i, iamhere->content->cmd[i]);
 		i++;
 	}
 	printf("infd == %s\noutfd == %s\nstatus == %i\noper == %i\n", iamhere->content->infd, iamhere->content->outfd, iamhere->content->status, iamhere->content->oper);
-	if (iamhere->next)
-		ms_test(data, iamhere->next);
+	ms_test(data, iamhere->next);
 }
 
 //-----------------------------------------------------
@@ -60,10 +62,9 @@ void	ms_prompt(t_data *data)
 
 	thisdir = getcwd(NULL, 0);
 	thisdir = ms_speciasplit(data, thisdir);
-	
 	if (data->exe->endline == 0)
 	{
-		printf("\n~/..%s", thisdir);
+		printf("~/..%s", thisdir);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 	}
@@ -99,7 +100,14 @@ int	terminatation(char *line)
 */
 int	ms_read_input(t_data *data)
 {
-	data->currinput = readline(" :)  ");
+	char	*cwd;
+	char	*new_cwd;
+
+	cwd = getcwd(NULL,0);
+	new_cwd = ft_strcat(cwd,"$ ");
+	data->currinput = readline(new_cwd);
+	free(new_cwd);
+	free(cwd);
 	if (!data->currinput || terminatation(data->currinput) == 1) //EOF
 		ms_error(data, "minishell.c 73: failloc :(", ENOMEM);
 	if (ms_strlen(data->currinput) != 0)
@@ -110,9 +118,40 @@ int	ms_read_input(t_data *data)
 	return (1);
 }
 
+void	print_all_cmd(char **cmd)
+{
+	int	i;
+
+	i = 0;
+	while(cmd[i])
+	{
+		printf("cmd[%d]:%s\n",i,cmd[i]);
+		i ++ ;
+	}
+}
+
+void	test_print(t_data *data)
+{
+	t_list *tmp;
+
+	tmp = data->lstart;
+	while(tmp)
+	{
+		printf("******************************************************\n");
+		printf("oper:	%d		status:		%d\n",tmp->content->oper,tmp->content->status);
+		print_all_cmd(tmp->content->cmd);
+		printf("infd:	%s\n",tmp->content->infd);
+		printf("outfd:	%s\n",tmp->content->outfd);
+		tmp = tmp->next;
+	}
+	printf("******************************************************\n");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	t_data	data;
+	t_data	data = {0};
+
+	
 	ms_initialize(&data, envp);
 	(void)argc;
 	(void)argv;
@@ -121,7 +160,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		ft_signal();
-		ms_prompt(&data);
+		//ms_prompt(&data);
 		if (ms_read_input(&data) == 1)
 			continue ;
 		if (data.env_set == 0)
@@ -130,10 +169,12 @@ int	main(int argc, char **argv, char **envp)
 		ms_parse_ctrl(&data); // here print
 		data_setting(&data); // problem
 		exec_command(&data);
+		test_print(&data);
+		printf("%d\n",data.errcode);
 		//exe_control(&data);
 		//ms_free(&data, 0);
 	}
-	//ms_free(&data, 1);
+	ms_free(&data, 1);
 	g_lastexit = 0;
 	exit(g_lastexit);
 }

@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 18:26:03 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/15 11:43:11 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 14:57:45 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	all_component_check(t_data *data)
 	while (tmp)
 	{
 		argvt = data->lstart->content;
-		if (builtin_exception(data) == 1)
+		if (builtin_exception(data->lstart) == 1)
 			return (0);
 		if (argvt->cmd[0])
 			command = (char *)argvt->cmd[0];
@@ -82,14 +82,14 @@ void	error_exit(char *msg, int error_number)
 	exit(error_number);
 }
 
-void	builtin_situation(t_data *data)
+void	builtin_situation(t_data *data, t_list *list)
 {
 	int		code;
 
 	code = 0;
-	if (builtin_exception(data) == 1)
+	if (builtin_exception(list) == 1)
 	{
-		code = builtin(data);
+		code = builtin(data, list);
 		exit(code);
 	}
 }

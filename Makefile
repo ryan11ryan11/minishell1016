@@ -6,13 +6,13 @@
 #    By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/17 15:25:56 by jbober            #+#    #+#              #
-#    Updated: 2024/10/15 13:29:59 by junhhong         ###   ########.fr        #
+#    Updated: 2024/10/15 15:02:22 by junhhong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
-CFLAGS := -Wall -Werror -Wextra #-fsanitize=address -g
+CFLAGS := -Wall -Werror -Wextra -g #-fsanitize=address
 HEADERS = src/minishell.h
 RM = rm -rf
 INCLUDE = -lreadline
@@ -22,8 +22,8 @@ OBJ_DIR = ./obj
 
 FILES = parse/parse\
 		parse/parsefk1\
-		parse/parsefk1b\
 		parse/parsefk2\
+		parse/parsefk2b\
 		parse/parsefk3\
 		parse/parsefk4\
 		envp\
@@ -34,6 +34,8 @@ FILES = parse/parse\
 		ut2ls\
 		ut3ls\
 		ut4ls\
+		ut5ls\
+		execution/src/utils\
 		execution/src/builtin_control\
 		execution/src/envlistclear\
 		execution/src/envp_list_maker\

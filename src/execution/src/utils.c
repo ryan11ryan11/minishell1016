@@ -6,9 +6,11 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 14:44:56 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/15 14:45:04 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:49:08 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../minishell.h"
 
 char	*without_data(char *str)
 {
@@ -34,5 +36,5 @@ void	print_current_path()
 
 	thisdir = getcwd(NULL, 0);
 	thisdir = without_data(thisdir);
-	printf("\n~/..%s", thisdir);
+	printf("~/..%s", thisdir);
 }

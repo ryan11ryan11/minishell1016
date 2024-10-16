@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 13:31:40 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/16 13:44:50 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:59:32 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,11 @@ void	set_terminal_print_off(void)
 void	ctrl_c(int signum)
 {
 	(void)signum;
-	if (g_child == 0)
-	{
-		ft_putstr_fd("\n", 2);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		print_current_path();
-		rl_redisplay();
-	}
-	else
-		kill(g_child, SIGINT);
+	ft_putstr_fd("\n", 2);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	print_current_path();
+	rl_redisplay();
 }
 
 void	ft_signal(void)

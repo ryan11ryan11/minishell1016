@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsefk2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
+/*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:04:43 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 15:17:43 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 15:56:15 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ static char	*ms_get_value(t_data *data, char *str, int l, int lenterm)
 /**
  * Returns a malloced *str made out of str1ng til l,
  * 		str2ng, str1ng after (l + lenterm)
+ * Also adds "" to the expansion
  * Frees str1ng and str2ng
  */
 static char	*ms_ex_strjoin(char *str1ng, char *str2ng, int l, int lenterm)
@@ -140,7 +141,7 @@ static char	*ms_ex_strjoin(char *str1ng, char *str2ng, int l, int lenterm)
 
 	i = 0;
 	j = 0;
-	newstr = malloc(ms_strlen(str1ng) + ms_strlen(str2ng) - lenterm + 1);
+	newstr = malloc(ms_strlen(str1ng) + ms_strlen(str2ng) - lenterm + 3);
 	if (!newstr)
 		return (NULL);
 	while (i < l)
@@ -148,17 +149,19 @@ static char	*ms_ex_strjoin(char *str1ng, char *str2ng, int l, int lenterm)
 		newstr[i] = str1ng[i];
 		i++;
 	}
+	newstr[i] = 34;
 	while ((i + j) < (l + ms_strlen(str2ng)))
 	{
-		newstr[i + j] = str2ng[j];
+		newstr[1 + i + j] = str2ng[j];
 		j++;
 	}
+	newstr[1 + i + j] = 34;
 	while ((l + lenterm) < (ms_strlen(str1ng)))
 	{
-		newstr[l + ms_strlen(str2ng)] = str1ng[l + lenterm];
+		newstr[2 + l + ms_strlen(str2ng)] = str1ng[l + lenterm];
 		l++;
 	}
-	newstr[l + ms_strlen(str2ng)] = '\0';
+	newstr[2 + l + ms_strlen(str2ng)] = '\0';
 	free(str1ng);
 	free(str2ng);
 	return (newstr);
@@ -169,6 +172,7 @@ static char	*ms_ex_strjoin(char *str1ng, char *str2ng, int l, int lenterm)
  * For $FAKE, lenterm = 5
  * Frees str1ng and freeme
  */
+
 static char	*ms_removeterm(char *str1ng, char *freeme, int l, int lenterm)
 {
 	int		i;

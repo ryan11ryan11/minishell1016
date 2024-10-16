@@ -6,12 +6,11 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 14:47:33 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 15:53:07 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:14:20 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-volatile sig_atomic_t	g_child;
 int	g_lastexit;
 
 void	ms_test(t_data *data, t_list *iamhere)
@@ -151,12 +150,9 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
 
-	
 	ms_initialize(&data, envp);
 	(void)argc;
 	(void)argv;
-	//signal(SIGINT, ms_strc);
-	//signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		ft_signal();
@@ -170,7 +166,7 @@ int	main(int argc, char **argv, char **envp)
 		data_setting(&data); // problem
 		exec_command(&data);
 		test_print(&data);
-		printf("%d\n",data.errcode);
+		printf("%d\n",g_lastexit);
 		//exe_control(&data);
 		//ms_free(&data, 0);
 	}

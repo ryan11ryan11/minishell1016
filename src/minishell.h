@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 15:30:25 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 15:52:05 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:12:37 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,20 +114,13 @@ void	ms_initialize(t_data *data, char **envp);
 void	ms_prompt(t_data *data);
 int		ms_read_input(t_data *data);
 
-// signals
+// signals************************************************************** */
 
-void	ms_strc(int sig);
-char	*ms_expandlexit(t_data *data);
-
-// ut1ls
-
-char	**ms_split(t_data *data, char *str, char split);
-int		*ms_countsplit(t_data *data, char *str, char split);
-int		ms_sepcount(char *str, char split);
-char	*ms_substr(t_data *data, char *str, int i, int j);
 char	*ms_speciasplit(t_data *data, char *str);
 
-// ut2ls
+// ut2ls************************************************************** */
+
+
 
 int		ms_strinlst(t_data *data, char *str);
 int		ms_strncmp(char	*set, char *str, int len);

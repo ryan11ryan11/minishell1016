@@ -6,13 +6,13 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:41:00 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/16 14:57:34 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:13:26 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-extern volatile sig_atomic_t	g_child;
+extern int	g_lastexit;
 
 void	case_outfile(t_node *argvt)
 {
@@ -267,7 +267,7 @@ void	exec_command(t_data *data)
 		return ;
 	if (is_pipe(data) == -1 && builtin_exception(data->lstart) == 1)
 	{
-		data->errcode = parent_process_exec(data);
+		g_lastexit = parent_process_exec(data);
 		return ;
 	}
 	i = -1;

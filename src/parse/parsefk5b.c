@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:39:34 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 16:58:43 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 17:04:31 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,9 @@ char	*ms_deqtfy_nodes(t_data *data, t_list *iamhere)
 		return ("End of List");
 	while (iamhere->content->cmd[k])
 	{
-		printf("---\t old-cmd[%i] == !%s!\n", k, iamhere->content->cmd[k]);
 		iamhere->content->cmd[k] = ms_cleanqt(iamhere->content->cmd[k], 0, 42);
 		if (!iamhere->content->cmd[k])
 			return (NULL);
-		printf("---\t new-cmd[%i] == !%s!\n", k, iamhere->content->cmd[k]);
 		k++;
 	}
 	if (!ms_deqtfy_nodes(data, iamhere->next))

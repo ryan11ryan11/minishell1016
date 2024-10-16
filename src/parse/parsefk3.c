@@ -5,135 +5,103 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/15 12:08:59 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/15 12:09:12 by jbober           ###   ########.fr       */
+/*   Created: 2024/10/16 12:35:10 by jbober            #+#    #+#             */
+/*   Updated: 2024/10/16 13:25:18 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 char		*ms_parsefk3_ctrl(t_data *data);
-static int	ms_getnumwords(char *str);
-static int	ms_fillcurrstr(t_data *data, int numwords);
-static int	ms_additem(t_data *data, int k, int start);
-static int	ms_partlen(t_data *data, int start);
+static char	*ms_removeqt(char *str, int weakqt, int strongqt);
+static int	ms_skipqt(char *str, int i, int *weakqt, int *strongqt);
+static int	ms_countqt(char *str, int weakqt, int strongqt);
 
 /**
  * Control structure
- * Fills data->**currstr with each piece of data->*currinput
+ * Removes quotes that ought to be removed
  */
 char	*ms_parsefk3_ctrl(t_data *data)
 {
-	int	numwords;
-
-	numwords = ms_getnumwords(data->currinput);
-	data->currstr = malloc((numwords + 1) * sizeof(char *));
-	if (!data->currstr)
+	data->currinput = ms_removeqt(data->currinput, 0, 42);
+	if (!data->currinput)
 		return (NULL);
-	if (!ms_fillcurrstr(data, numwords))
-		return (NULL);
-	return ("Success");
+	return (data->currinput);
 }
 
 /**
- * Returns the number of words (strings seperated by 32)
+ * Returns a malloced str without quotes except those inside other quotes
+ * Frees given str
+ * str == str to be cleansed, weakqt == 0, stronqt == 42
  */
-static int	ms_getnumwords(char *str)
+static char	*ms_removeqt(char *str, int weakqt, int strongqt)
 {
-	int	i;
-	int	numwords;
-	int	weakqt;
-	int	strongqt;
+	int		i;
+	int		oldi;
+	int		j;
+	char	*newstr;
 
 	i = 0;
-	numwords = 1;
-	weakqt = 0;
-	strongqt = 42;
-	while (str[i])
+	j = 0;
+	newstr = malloc(ms_strlen(str) + 1 - ms_countqt(str, 0, 42));
+	if (!newstr)
+		return (NULL);
+	while (str[i + j])
 	{
-		if ((str[i] == 34) && (strongqt % 2 == 0))
-			weakqt++;
-		if ((str[i] == 39) && (weakqt % 2 == 0))
-			strongqt++;
-		if ((str[i] == 32) && (weakqt % 2 == 0) && (strongqt % 2 == 0))
-			numwords++;
-		i++;
+		oldi = i;
+		i += ms_skipqt(str, (i + j), &weakqt, &strongqt);
+		if (i == oldi)
+		{
+			newstr[j] = str[i + j];
+			j++;
+		}
 	}
-	return (numwords);
+	newstr[j] = '\0';
+	free(str);
+	return (newstr);
 }
 
 /**
- * Fills the array data->**currstr with content from data->*currinput
- * Returns 0 on malloc fail
+ * Increses i if a char needs to be skipped on account of being a qt
+ * Returns 0 if nothings was skipped, 1 if one char was skipped
+ * str, i == str[i] to be examined, weakqt == 0, stronqt == 42
  */
-static int	ms_fillcurrstr(t_data *data, int numwords)
+static int	ms_skipqt(char *str, int i, int *weakqt, int *strongqt)
 {
-	int	i;
-	int	k;
+	int	qt;
 
-	i = 0;
-	k = 0;
-	data->currstr[numwords] = NULL;
-	while (k < numwords)
-	{
-		i = ms_additem(data, k, i);
-		if (!i)
-			return (0);
-		k++;
-	}
-	return (1);
+	qt = ms_check_qt(str[i], weakqt, strongqt);
+	if ((!qt) && (str[i] == 34 || str[i] == 39))
+		return (1);
+	if ((qt == 1) && (str[i] == 34))
+		return (1);
+	if ((qt == 2) && (str[i] == 39))
+		return (1);
+	return (0);
 }
 
 /**
- * Adds the 32-delimited-str in data->*currinput to data->*currstr[k]
- * Returns 0 on malloc fail
- * start == first letter of str in *currinput
+ * Returns number of chars to be removed by qt-cleansing
+ * str == str to be cleansed, weakqt == 0, stronqt == 42
  */
-static int	ms_additem(t_data *data, int k, int start)
+static int	ms_countqt(char *str, int weakqt, int strongqt)
 {
 	int	i;
 	int	j;
-	int	len;
+	int	qt;
 
-	len = (ms_partlen(data, start) - start);
 	i = 0;
-	j = start;
-	data->currstr[k] = malloc((len + 1) * sizeof(char));
-	if (!data->currstr[k])
-		return (0);
-	data->currstr[k][len] = '\0';
-	while (i < len)
+	j = 0;
+	while (str[i])
 	{
-		data->currstr[k][i] = data->currinput[j];
-		i++;
-		j++;
-	}
-	return (len + start + 1);
-}
-
-/**
- * Returns the index of the next 32/'\0' in data->*currinput
- * start == first letter of str in *currinput
- */
-static int	ms_partlen(t_data *data, int start)
-{
-	int	i;
-	int	weakqt;
-	int	strongqt;
-
-	i = start;
-	weakqt = 0;
-	strongqt = 42;
-	while (data->currinput[i])
-	{
-		if ((data->currinput[i] == 34) && (strongqt % 2 == 0))
-			weakqt++;
-		if ((data->currinput[i] == 39) && (weakqt % 2 == 0))
-			strongqt++;
-		if ((data->currinput[i] == 32) && (weakqt % 2 == 0)
-			&& (strongqt % 2 == 0))
-			return (i);
+		qt = ms_check_qt(str[i], &weakqt, &strongqt);
+		if ((!qt) && (str[i] == 34 || str[i] == 39))
+			j++;
+		if ((qt == 1) && (str[i] == 34))
+			j++;
+		if ((qt == 2) && (str[i] == 39))
+			j++;
 		i++;
 	}
-	return (i);
+	return (j);
 }

@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 15:30:25 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/15 15:43:02 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 12:35:05 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,5 +158,9 @@ extern char	*ms_parsefk3_ctrl(t_data *data);
 // parsefk4
 
 extern char	*ms_parsefk4_ctrl(t_data *data);
+
+// parsefk5
+
+extern char	*ms_parsefk5_ctrl(t_data *data);
 
 #endif

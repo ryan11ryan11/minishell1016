@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsefk4.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:08:59 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 15:52:55 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:39:54 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	ms_getnumwords(char *str, int weakqt, int strongqt)
 	numwords = 1;
 	while (str[i])
 	{
-		if ((str[i] == 32) && (!ms_check_qt(str[i], &weakqt, &strongqt)))
+		if ((!ms_check_qt(str[i], &weakqt, &strongqt)) && str[i] == 32)
 			numwords++;
 		i++;
 	}

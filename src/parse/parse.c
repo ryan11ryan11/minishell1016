@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:04:31 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 17:39:45 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 17:58:47 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,3 +33,5 @@ void	ms_parse_ctrl(t_data *data)
 	if (!(ms_parsefk5_ctrl(data)))
 		ms_error(data, "parse/parse/34 failloc :(", ENOMEM);
 }
+
+// find env right

@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:04:43 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 17:19:33 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 18:02:01 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static int	ms_get_lenterm(char *str, int l);
 static char	*ms_get_value(t_data *data, char *str, int l, int lenterm);
 static char	*ms_ex_strjoin(char *str1ng, char *str2ng, int l, int lenterm);
 static char	*ms_removeterm(char *str1ng, char *freeme, int l, int lenterm);
+static int	ms_findexpanse(t_data *data, char *str);
 
 /**
  * Control structure
@@ -100,7 +101,7 @@ static int	ms_get_lenterm(char *str, int l)
  * strdups lookme to the value of env[k]
  * Returns malloced *str which is VALUE in TERM=VALUE
  * lenterm == $TERM, while lookeme is "TERM", thus we don't need the usual +1
- * 		+2 though because we will put the output into ""
+ * 		+1 becuse we want the =, too, so we don't confuse USER= with USER_ZOO=
  *	str = str to ?, l = index to $ in $TERM, lenterm = strlen of $TERM
  */
 static char	*ms_get_value(t_data *data, char *str, int l, int lenterm)
@@ -115,7 +116,7 @@ static char	*ms_get_value(t_data *data, char *str, int l, int lenterm)
 		lookme = ms_strdup(ms_itoa(g_lastexit));
 		return (lookme);
 	}
-	lookme = malloc((lenterm + 2) * sizeof(char));
+	lookme = malloc((lenterm + 1) * sizeof(char));
 	if (!lookme)
 		return (NULL);
 	while ((str[i + l+ 1]) && (i + 1 < lenterm))
@@ -123,7 +124,8 @@ static char	*ms_get_value(t_data *data, char *str, int l, int lenterm)
 		lookme[i] = str[i + l + 1];
 		i++;
 	}
-	lookme[i] = '\0';
+	lookme[i] = 61;
+	lookme[i + 1] = '\0';
 	k = ms_findexpanse(data, lookme);
 	free(lookme);
 	if (k == -1)
@@ -208,4 +210,23 @@ static char	*ms_removeterm(char *str1ng, char *freeme, int l, int lenterm)
 	free(str1ng);
 	free(freeme);
 	return (newstr);
+}
+
+/**
+ * Checks **env for *str
+ * On Found, return k (as in env[k])
+ * If not found, return -1
+ */
+static int	ms_findexpanse(t_data *data, char *str)
+{
+	int	k;
+
+	k = 0;
+	while (data->env[k])
+	{
+		if (!ms_strncmp(data->env[k], str, ms_strlen(str)))
+			return (k);
+		k++;
+	}
+	return (-1);
 }

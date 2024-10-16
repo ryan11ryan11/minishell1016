@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ut4ls.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 13:40:44 by rakropp           #+#    #+#             */
-/*   Updated: 2024/10/16 15:52:12 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:59:35 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,25 +74,6 @@ char	*ms_itoa(int n)
 		n = n / 10;
 	}
 	return (ret);
-}
-
-/**
- * Checks **env for *str
- * On Found, return k (as in env[k])
- * If not found, return -1
- */
-int	ms_findexpanse(t_data *data, char *str)
-{
-	int	k;
-
-	k = 0;
-	while (data->env[k])
-	{
-		if (!ms_strncmp(data->env[k], str, ms_strlen(str)))
-			return (k);
-		k++;
-	}
-	return (-1);
 }
 
 /**

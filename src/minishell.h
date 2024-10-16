@@ -6,7 +6,7 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 15:30:25 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 16:51:24 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/16 17:59:49 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ t_list	*ms_lstlast(t_list *lst);
 
 char	*ms_substrrev(char *str, int start, int len);
 char	*ms_itoa(int n);
-int		ms_findexpanse(t_data *data, char *str);
 void	ms_ctrlitialize(t_data *data);
 void	ms_ctrlfill(t_data *data, int k, char *str);
 int		ms_cinset(char c, char *set, int modus);

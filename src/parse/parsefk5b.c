@@ -6,14 +6,14 @@
 /*   By: jbober <jbober@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:39:34 by jbober            #+#    #+#             */
-/*   Updated: 2024/10/16 18:06:01 by jbober           ###   ########.fr       */
+/*   Updated: 2024/10/17 12:30:19 by jbober           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 char		*ms_deqtfy_nodes(t_data *data, t_list *iamhere);
-char		*ms_cleanqt(char *str, int weakqt, int strongqt);
+char		*ms_cleanqt(char *str, int weakqt, int strongqt, int modus);
 static int	ms_skipqt(char *str, int i, int *weakqt, int *strongqt);
 static int	ms_countqt(char *str, int weakqt, int strongqt);
 
@@ -30,7 +30,7 @@ char	*ms_deqtfy_nodes(t_data *data, t_list *iamhere)
 		return ("End of List");
 	while (iamhere->content->cmd[k])
 	{
-		iamhere->content->cmd[k] = ms_cleanqt(iamhere->content->cmd[k], 0, 42);
+		iamhere->content->cmd[k] = ms_cleanqt(iamhere->content->cmd[k], 0, 42, 1);
 		if (!iamhere->content->cmd[k])
 			return (NULL);
 		k++;
@@ -42,10 +42,10 @@ char	*ms_deqtfy_nodes(t_data *data, t_list *iamhere)
 
 /**
  * Returns a malloced copy of str without unwanted qts
- * Frees str
+ * Modus 1: Frees str
  * str = str to handle, weakqt = 0, strongqt = 42
  */
-char	*ms_cleanqt(char *str, int weakqt, int strongqt)
+char	*ms_cleanqt(char *str, int weakqt, int strongqt, int modus)
 {
 	int		i;
 	int		oldi;
@@ -68,7 +68,8 @@ char	*ms_cleanqt(char *str, int weakqt, int strongqt)
 		}
 	}
 	newstr[j] = '\0';
-	free(str);
+	if (modus == 1)
+		free(str);
 	return (newstr);
 }
 
